@@ -1,0 +1,43 @@
+{
+  "name": "@devpraxis/api",
+  "version": "0.1.0",
+  "description": "DevPraxis backend — Express 5 + TypeScript + MongoDB",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "imports": {
+    "#*": {
+      "development": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "scripts": {
+    "dev": "node --watch --conditions development --env-file=.env src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "start": "node --env-file=.env dist/server.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^5.23.2",
+    "@sindresorhus/slugify": "^3.0.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "jose": "^6.2.3",
+    "mongoose": "^9.7.2",
+    "multer": "^2.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^26.0.1",
+    "typescript": "^6.0.3"
+  }
+}
