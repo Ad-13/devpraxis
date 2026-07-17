@@ -3,6 +3,7 @@ import { ZodError, z } from 'zod';
 
 import { env } from '#config/env';
 import { ApiError } from '#utils/ApiError';
+import { isDuplicateKey } from '#utils/mongo';
 
 export function notFound(req: Request, _res: Response, next: NextFunction): void {
   next(ApiError.notFound(`Route ${req.method} ${req.path} not found`));
@@ -32,7 +33,7 @@ export function errorHandler(
     return;
   }
 
-  if (isMongoDuplicateKeyError(err)) {
+  if (isDuplicateKey(err)) {
     res.status(409).json({
       error: {
         message: 'Resource with these unique fields already exists',
@@ -50,18 +51,4 @@ export function errorHandler(
       code: 'INTERNAL',
     },
   });
-}
-
-interface MongoDuplicateKeyError {
-  code: 11000;
-  keyValue: Record<string, unknown>;
-}
-
-function isMongoDuplicateKeyError(err: unknown): err is MongoDuplicateKeyError {
-  return (
-    typeof err === 'object' &&
-    err !== null &&
-    'code' in err &&
-    err.code === 11000
-  );
 }
