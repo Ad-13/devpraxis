@@ -19,6 +19,8 @@ const envSchema = z.object({
   ACCESS_TOKEN_TTL: z.string().default('15m'),
 
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
+
+  OLLAMA_BASE_URL: z.url().default('http://localhost:11434/v1'),
 });
 
 const parsed = envSchema.safeParse(process.env);

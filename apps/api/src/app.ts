@@ -6,6 +6,7 @@ import { errorHandler, notFound } from '#middleware/errorHandler';
 import { authRoutes } from '#modules/auth/auth.routes';
 import { articleRoutes } from '#modules/articles/articles.routes';
 import { topicRoutes } from '#modules/topics/topics.routes';
+import { aiRoutes } from '#modules/ai/ai.routes';
 
 export const app = express();
 
@@ -17,6 +18,7 @@ app.get('/health', (_req, res) => {
   res.json({ data: { status: 'ok', uptime: process.uptime() } });
 });
 
+app.use('/api/ai', aiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/articles', articleRoutes);

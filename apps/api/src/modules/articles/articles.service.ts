@@ -77,10 +77,21 @@ export async function listMine(userId: string) {
   return ArticleModel.find({ authorId: userId }).sort({ updatedAt: -1 });
 }
 
-export async function createArticle(userId: string, dto: CreateArticleDto, source: ArticleSource = 'manual') {
+export async function createArticle(
+  userId: string,
+  dto: CreateArticleDto,
+  source: ArticleSource = 'manual',
+  extra?: { translationOf?: string }
+) {
   await assertTopicsExist(dto.topicIds);
   const slug = await ensureUniqueSlug(dto.title, articleSlugTaken);
-  return ArticleModel.create({ ...dto, slug, authorId: userId, source });
+  return ArticleModel.create({
+    ...dto,
+    slug,
+    authorId: userId,
+    source,
+    ...(extra?.translationOf ? { translationOf: extra.translationOf } : {}),
+  });
 }
 
 export async function updateArticle(id: string, userId: string, dto: UpdateArticleDto) {

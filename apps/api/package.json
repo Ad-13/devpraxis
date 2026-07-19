@@ -21,14 +21,17 @@
   },
   "dependencies": {
     "@notionhq/client": "^5.23.2",
+    "@openai/agents": "^0.13.5",
     "@sindresorhus/slugify": "^3.0.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.6.0",
     "jose": "^6.2.3",
     "mongoose": "^9.7.2",
     "multer": "^2.2.0",
+    "openai": "^6.48.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

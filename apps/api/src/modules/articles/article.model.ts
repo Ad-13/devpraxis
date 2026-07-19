@@ -3,6 +3,7 @@ import { Schema, model, type InferSchemaType } from 'mongoose';
 export const LANGUAGES = ['ru', 'en', 'de'] as const;
 export const SOURCES = ['manual', 'notion', 'upload', 'ai-translation'] as const;
 export type ArticleSource = (typeof SOURCES)[number];
+export type Language = (typeof LANGUAGES)[number];
 
 const articleSchema = new Schema(
   {
