@@ -12,6 +12,7 @@ import type { LoginDto, RegisterDto } from '#modules/auth/auth.schemas';
 import { isDuplicateKey } from '#utils/mongo';
 
 const BCRYPT_COST = 12;
+const MAX_SESSIONS_PER_USER = 5;
 const accessSecret = new TextEncoder().encode(env.JWT_ACCESS_SECRET);
 
 /* helpers */
@@ -36,6 +37,16 @@ async function issueRefreshToken(userId: string): Promise<string> {
     tokenHash: sha256(raw),
     expiresAt: new Date(Date.now() + env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000),
   });
+
+  const excess = await RefreshTokenModel.find({ userId })
+    .sort({ createdAt: -1 })
+    .skip(MAX_SESSIONS_PER_USER)
+    .select('_id')
+    .lean();
+
+  if (excess.length > 0) {
+    await RefreshTokenModel.deleteMany({ _id: { $in: excess.map((t) => t._id) } });
+  }
 
   return raw;
 }
@@ -70,7 +81,7 @@ export async function register(dto: RegisterDto) {
 
 export async function login(dto: LoginDto) {
   const user = await UserModel.findOne({ email: dto.email }).select('+passwordHash');
-  const isPasswordValid = user && await bcrypt.compare(dto.password, user.passwordHash) ;
+  const isPasswordValid = user && await bcrypt.compare(dto.password, user.passwordHash);
 
   if (!user || !isPasswordValid) {
     throw ApiError.unauthorized('Invalid email or password');
