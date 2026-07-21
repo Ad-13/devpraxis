@@ -8,6 +8,10 @@ import { articleRoutes } from '#modules/articles/articles.routes';
 import { topicRoutes } from '#modules/topics/topics.routes';
 import { aiRoutes } from '#modules/ai/ai.routes';
 
+import swaggerUi from 'swagger-ui-express';
+
+import { openApiDocument } from '#docs/openapi';
+
 export const app = express();
 
 app.use(cors());
@@ -17,6 +21,11 @@ app.use(cookieParser());
 app.get('/health', (_req, res) => {
   res.json({ data: { status: 'ok', uptime: process.uptime() } });
 });
+
+app.get('/openapi.json', (_req, res) => {
+  res.json(openApiDocument);
+});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
 app.use('/api/ai', aiRoutes);
 app.use('/api/auth', authRoutes);

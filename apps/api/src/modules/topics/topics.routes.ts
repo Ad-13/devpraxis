@@ -5,7 +5,7 @@ import { requireAuth } from '#middleware/requireAuth';
 import { validateBody } from '#middleware/validateBody';
 import * as topicsService from '#modules/topics/topics.service';
 
-const createTopicSchema = z.object({ name: z.string().trim().min(2).max(50) });
+export const createTopicSchema = z.object({ name: z.string().trim().min(2).max(50) });
 
 export const topicRoutes = Router();
 
