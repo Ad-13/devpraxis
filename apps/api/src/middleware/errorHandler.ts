@@ -3,7 +3,7 @@ import { ZodError, z } from 'zod';
 
 import { env } from '#config/env';
 import { ApiError } from '#utils/ApiError';
-import { isDuplicateKey } from '#utils/mongo';
+import { isDuplicateKey, isMongooseCastError } from '#utils/mongo';
 
 export function notFound(req: Request, _res: Response, next: NextFunction): void {
   next(ApiError.notFound(`Route ${req.method} ${req.path} not found`));
@@ -28,6 +28,17 @@ export function errorHandler(
         message: 'Validation failed',
         code: 'VALIDATION_ERROR',
         details: z.treeifyError(err),
+      },
+    });
+    return;
+  }
+
+  if (isMongooseCastError(err)) {
+    res.status(400).json({
+      error: {
+        message: `Invalid value for "${err.path}"`,
+        code: 'INVALID_ID',
+        details: { path: err.path, value: err.value },
       },
     });
     return;

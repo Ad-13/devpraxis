@@ -6,9 +6,11 @@ import { validateBody } from '#middleware/validateBody';
 import * as controller from '#modules/articles/articles.controller';
 import {
   createArticleSchema,
+  idParamSchema,
   notionImportSchema,
   updateArticleSchema,
 } from '#modules/articles/article.schemas';
+import { validateParams } from '#middleware/validateParams';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -27,9 +29,9 @@ articleRoutes.post('/import/upload', requireAuth, upload.single('file'), control
 
 /* wth params */
 articleRoutes.get('/:idOrSlug', controller.getOne);
-articleRoutes.patch('/:id', requireAuth, validateBody(updateArticleSchema), controller.update);
-articleRoutes.post('/:id/publish', requireAuth, controller.publish);
-articleRoutes.post('/:id/unpublish', requireAuth, controller.unpublish);
-articleRoutes.delete('/:id', requireAuth, controller.remove);
-articleRoutes.post('/:id/favorite', requireAuth, controller.favorite);
-articleRoutes.delete('/:id/favorite', requireAuth, controller.unfavorite);
+articleRoutes.patch('/:id', requireAuth, validateParams(idParamSchema), validateBody(updateArticleSchema), controller.update);
+articleRoutes.post('/:id/publish', requireAuth, validateParams(idParamSchema), controller.publish);
+articleRoutes.post('/:id/unpublish', requireAuth, validateParams(idParamSchema), controller.unpublish);
+articleRoutes.delete('/:id', requireAuth, validateParams(idParamSchema), controller.remove);
+articleRoutes.post('/:id/favorite', requireAuth, validateParams(idParamSchema), controller.favorite);
+articleRoutes.delete('/:id/favorite', requireAuth, validateParams(idParamSchema), controller.unfavorite);

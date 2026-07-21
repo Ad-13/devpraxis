@@ -13,6 +13,8 @@ export const createArticleSchema = z.object({
 
 export const updateArticleSchema = createArticleSchema.partial();
 
+export const idParamSchema = z.object({ id: objectIdSchema });
+
 export const notionImportSchema = z.object({
   pageId: z.string().trim().min(32),
   integrationToken: z.string().trim().min(1),

@@ -1,4 +1,4 @@
-import type { QueryFilter } from 'mongoose';
+import { startSession, type QueryFilter } from 'mongoose';
 
 import { ApiError } from '#utils/ApiError';
 import { ensureUniqueSlug } from '#utils/slug';
@@ -110,7 +110,27 @@ export async function setPublished(id: string, userId: string, publish: boolean)
 
 export async function deleteArticle(id: string, userId: string) {
   await findOwnedArticle(id, userId);
-  await ArticleModel.deleteOne({ _id: id });
+
+  const session = await startSession();
+  try {
+    await session.withTransaction(async () => {
+      await ArticleModel.deleteOne({ _id: id }, { session });
+
+      await UserModel.updateMany(
+        { favorites: id },
+        { $pull: { favorites: id } },
+        { session },
+      );
+
+      await ArticleModel.updateMany(
+        { translationOf: id },
+        { $unset: { translationOf: '' } },
+        { session },
+      );
+    });
+  } finally {
+    await session.endSession();
+  }
 }
 
 export async function setFavorite(articleId: string, userId: string, on: boolean) {
