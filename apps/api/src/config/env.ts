@@ -16,11 +16,13 @@ const envSchema = z.object({
     .string()
     .min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
 
-  ACCESS_TOKEN_TTL: z.string().default('15m'),
+  ACCESS_TOKEN_TTL_MIN: z.coerce.number().int().positive().default(15),
 
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
 
   OLLAMA_BASE_URL: z.url().default('http://localhost:11434/v1'),
+
+  WEB_ORIGIN: z.url().default('http://localhost:3001'),
 });
 
 const parsed = envSchema.safeParse(process.env);

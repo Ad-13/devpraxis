@@ -1,20 +1,10 @@
-import type { CookieOptions, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
-import { env } from '#config/env';
 import { ApiError } from '#utils/ApiError';
 import * as authService from '#modules/auth/auth.service';
 
 import type { LoginDto, RegisterDto } from '#modules/auth/auth.schemas';
-
-const REFRESH_COOKIE = 'refreshToken';
-
-const refreshCookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: env.NODE_ENV === 'production',
-  sameSite: 'lax',
-  path: '/api/auth',
-  maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
-};
+import { clearAuthCookies, generateCsrfToken, REFRESH_COOKIE, setAuthCookies } from '#modules/auth/cookies';
 
 export async function register(
   req: Request<unknown, unknown, RegisterDto>,
@@ -22,7 +12,7 @@ export async function register(
 ): Promise<void> {
   const { user, accessToken, refreshToken } = await authService.register(req.body);
 
-  res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions);
+  setAuthCookies(res, { accessToken, refreshToken, csrfToken: generateCsrfToken() });
   res.status(201).json({ data: { user, accessToken } });
 }
 
@@ -32,7 +22,7 @@ export async function login(
 ): Promise<void> {
   const { user, accessToken, refreshToken } = await authService.login(req.body);
 
-  res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions);
+  setAuthCookies(res, { accessToken, refreshToken, csrfToken: generateCsrfToken() });
   res.json({ data: { user, accessToken } });
 }
 
@@ -45,7 +35,7 @@ export async function refresh(req: Request, res: Response): Promise<void> {
 
   const { accessToken, refreshToken } = await authService.refresh(rawToken);
 
-  res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions);
+  setAuthCookies(res, { accessToken, refreshToken, csrfToken: generateCsrfToken() });
   res.json({ data: { accessToken } });
 }
 
@@ -54,6 +44,6 @@ export async function logout(req: Request, res: Response): Promise<void> {
 
   await authService.logout(typeof rawToken === 'string' ? rawToken : undefined);
 
-  res.clearCookie(REFRESH_COOKIE, { path: refreshCookieOptions.path });
+  clearAuthCookies(res);
   res.status(204).end();
 }

@@ -21,7 +21,7 @@ async function signAccessToken(userId: string): Promise<string> {
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(userId)
     .setIssuedAt()
-    .setExpirationTime(env.ACCESS_TOKEN_TTL)
+    .setExpirationTime(`${env.ACCESS_TOKEN_TTL_MIN}m`)
     .sign(accessSecret);
 }
 

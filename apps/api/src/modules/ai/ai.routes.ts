@@ -5,6 +5,7 @@ import { requireAuth } from '#middleware/requireAuth';
 import { validateBody } from '#middleware/validateBody';
 import * as controller from '#modules/ai/ai.controller';
 import { chatSchema } from '#modules/ai/ai.schemas';
+import { requireCsrf } from '#modules/auth/requireCsrf';
 
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -16,7 +17,7 @@ const aiLimiter = rateLimit({
 
 export const aiRoutes = Router();
 
-aiRoutes.use(requireAuth, aiLimiter);
+aiRoutes.use(requireAuth, requireCsrf, aiLimiter);
 
 aiRoutes.get('/models', controller.listModels);
 aiRoutes.post('/articles/:id/summary', controller.summary);

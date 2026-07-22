@@ -6,6 +6,7 @@ import { validateBody } from '#middleware/validateBody';
 import * as topicsService from '#modules/topics/topics.service';
 import { idParamSchema } from '#modules/articles/article.schemas';
 import { validateParams } from '#middleware/validateParams';
+import { requireCsrf } from '#modules/auth/requireCsrf';
 
 export const createTopicSchema = z.object({ name: z.string().trim().min(2).max(50) });
 
@@ -15,11 +16,11 @@ topicRoutes.get('/', async (_req, res) => {
   res.json({ data: await topicsService.listTopics() });
 });
 
-topicRoutes.post('/', requireAuth, validateBody(createTopicSchema), async (req, res) => {
+topicRoutes.post('/', requireAuth, requireCsrf, validateBody(createTopicSchema), async (req, res) => {
   res.status(201).json({ data: await topicsService.createTopic(req.body.name) });
 });
 
-topicRoutes.delete('/:id', requireAuth, validateParams(idParamSchema), async (req: Request<{ id: string }>, res) => {
+topicRoutes.delete('/:id', requireAuth, requireCsrf, validateParams(idParamSchema), async (req: Request<{ id: string }>, res) => {
   await topicsService.deleteTopic(req.params.id);
   res.status(204).end();
 });

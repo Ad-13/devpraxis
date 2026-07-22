@@ -11,10 +11,11 @@ import { aiRoutes } from '#modules/ai/ai.routes';
 import swaggerUi from 'swagger-ui-express';
 
 import { openApiDocument } from '#docs/openapi';
+import { env } from '#config/env';
 
 export const app = express();
 
-app.use(cors());
+app.use(cors({ origin: env.WEB_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
