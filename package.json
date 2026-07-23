@@ -7,7 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @devpraxis/api",
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev --workspace @devpraxis/api",
+    "dev:web": "npm run dev --workspace @devpraxis/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
     "lint": "eslint .",
@@ -18,13 +20,16 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.0.1",
+    "concurrently": "^10.0.3",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "prettier": "^3.9.5",
     "typescript-eslint": "^8.64.0"
   },
   "allowScripts": {
     "bcrypt@6.0.0": true,
-    "@scarf/scarf": false
+    "@scarf/scarf": false,
+    "sharp@0.34.5": true
   }
 }

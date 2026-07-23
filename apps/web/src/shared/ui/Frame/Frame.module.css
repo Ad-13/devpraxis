@@ -1,0 +1,20 @@
+.frame {
+  clip-path: var(--clip-corner);
+  background: var(--line);
+  padding: 1px;
+  transition: background var(--dur) var(--ease-out);
+}
+
+.interactive:hover {
+  background: var(--accent);
+}
+
+.frame:has(:focus-visible) {
+  filter: drop-shadow(0 0 0 2px var(--accent)) drop-shadow(0 0 10px var(--accent-dim));
+}
+
+.inner {
+  clip-path: var(--clip-corner);
+  background: var(--surface);
+  height: 100%;
+}

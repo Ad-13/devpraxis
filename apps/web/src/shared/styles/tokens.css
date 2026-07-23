@@ -1,0 +1,94 @@
+:root {
+  /* --- surfaces --- */
+  --bg: #0d0c0a;
+  --surface: #16140f; /* cards, panels */
+  --surface-raised: #1e1b15; /* upright panels: dropdown menus, modals */
+  --line: #2b2721; /* dividers, frames */
+
+  /* --- Text --- */
+  --ink: #ebe7dd; /* main */
+  --ink-muted: #9a9384; /* secondary */
+  --ink-faint: #7d7668; /* meta, placeholder */
+
+  /* --- Accent --- */
+  --accent: #d4a33e;
+  --accent-bright: #f0c065; /* hover, активные состояния */
+  --accent-dim: rgba(212, 163, 62, 0.14); /* highlight */
+  --on-accent: #14110a; /* text on accent */
+
+  /* --- Semantics --- */
+  --danger: #b83a2e;
+  --success: #6a9e5c;
+
+  /* --- Typography scales --- */
+  --font-display: var(--font-rajdhani); /* headings, titles, next/font */
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.185rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+
+  --tracking-wide: 0.14em; /* for signatures */
+  --tracking-label: 0.22em; /* for signatures */
+
+  /* --- Spacing --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* --- Geometry DX:HR --- */
+  --cut: 10px; /* size of rounded corners */
+  --clip-corner: polygon(
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,
+    0 var(--cut)
+  );
+  --radius: 2px; /* where clip-path is not enough */
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --dur-slow: 350ms;
+
+  /* --- Layers --- */
+  --z-nav: 10;
+  --z-dropdown: 50;
+  --z-modal: 100;
+}
+
+/* --- Switching acents: data-accent attribute in <html> tag --- */
+[data-accent='crimson'] {
+  --accent: #e0604f;
+  --accent-bright: #f58573;
+  --accent-dim: rgba(212, 87, 74, 0.14);
+  --on-accent: #180a07;
+}
+
+[data-accent='cyan'] {
+  --accent: #4ab8c9;
+  --accent-bright: #74d7e6;
+  --accent-dim: rgba(74, 184, 201, 0.14);
+  --on-accent: #08181c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur: 0ms;
+    --dur-slow: 0ms;
+  }
+}
