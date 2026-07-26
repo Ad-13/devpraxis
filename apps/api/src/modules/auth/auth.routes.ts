@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { validateBody } from '#middleware/validateBody';
 import * as authController from '#modules/auth/auth.controller';
-import { loginSchema, registerSchema } from '#modules/auth/auth.schemas';
+import { loginSchema, registerSchema } from '@devpraxis/shared';
 import { requireCsrf } from '#modules/auth/requireCsrf';
 
 export const authRoutes = Router();

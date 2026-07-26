@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
+import { AUTH_LIMITS } from '../domain/auth.ts';
+
 export const registerSchema = z.object({
-  name: z.string().trim().min(2).max(100), // because of bcrypt
+  name: z.string().trim().min(AUTH_LIMITS.nameMin).max(AUTH_LIMITS.nameMax),
   email: z.email().toLowerCase(),
-  password: z.string().min(8).max(72),
+  password: z.string().min(AUTH_LIMITS.passwordMin).max(AUTH_LIMITS.passwordMax),
 });
 
 export const loginSchema = z.object({

@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import { ApiError } from '#utils/ApiError';
 import * as authService from '#modules/auth/auth.service';
 
-import type { LoginDto, RegisterDto } from '#modules/auth/auth.schemas';
+import type { LoginDto, RegisterDto } from '@devpraxis/shared';
 import { clearAuthCookies, generateCsrfToken, REFRESH_COOKIE, setAuthCookies } from '#modules/auth/cookies';
 
 export async function register(

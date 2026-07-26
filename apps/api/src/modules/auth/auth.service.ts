@@ -8,8 +8,8 @@ import { ApiError } from '#utils/ApiError';
 import { RefreshTokenModel } from '#modules/auth/refreshToken.model';
 import { UserModel } from '#modules/users/user.model';
 
-import type { LoginDto, RegisterDto } from '#modules/auth/auth.schemas';
 import { isDuplicateKey } from '#utils/mongo';
+import type { RegisterDto, LoginDto } from '@devpraxis/shared';
 
 const BCRYPT_COST = 12;
 const MAX_SESSIONS_PER_USER = 5;

@@ -1,11 +1,10 @@
-import { DEFAULT_AI_MODEL, type AiModelId } from '#config/aiModels';
+import { DEFAULT_AI_MODEL, type AiModelId, type ChatDto, type Language } from '@devpraxis/shared';
 import { ApiError } from '#utils/ApiError';
-import { ArticleModel, type Language } from '#modules/articles/article.model';
+import { ArticleModel } from '#modules/articles/article.model';
 import * as articlesService from '#modules/articles/articles.service';
 import { aiProvider } from '#modules/ai/providers/ai.provider';
 import { z } from 'zod';
 import { buildPrepCoach, run } from '#modules/ai/agent/prepCoach';
-import type { ChatDto } from '#modules/ai/ai.schemas';
 import { MaxTurnsExceededError } from '@openai/agents';
 
 const guardrailSchema = z.object({ allowed: z.boolean() });

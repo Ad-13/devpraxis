@@ -4,8 +4,8 @@ import { rateLimit } from 'express-rate-limit';
 import { requireAuth } from '#middleware/requireAuth';
 import { validateBody } from '#middleware/validateBody';
 import * as controller from '#modules/ai/ai.controller';
-import { chatSchema } from '#modules/ai/ai.schemas';
 import { requireCsrf } from '#modules/auth/requireCsrf';
+import { chatSchema } from '@devpraxis/shared';
 
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

@@ -1,11 +1,9 @@
 import type { Request, Response } from 'express';
 import type { ParamsDictionary } from 'express-serve-static-core';
 
-import { AI_MODELS } from '#config/aiModels';
+import { AI_MODELS, summarySchema, questionsSchema, translateSchema, type ChatDto } from '@devpraxis/shared';
 import { currentUserId } from '#utils/currentUserId';
 import * as aiService from '#modules/ai/ai.service';
-import { questionsSchema, summarySchema, translateSchema } from '#modules/ai/ai.schemas';
-import type { ChatDto } from '#modules/ai/ai.schemas';
 
 export function listModels(_req: Request, res: Response): void {
   res.json({ data: AI_MODELS });
