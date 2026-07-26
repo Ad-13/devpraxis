@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { env } from '#config/env';
 import { ApiError } from '#utils/ApiError';
-import type { AiModelId } from '#config/aiModels';
+import type { AiModelId } from '@devpraxis/shared';
 
 function extractJson(text: string): string {
   const cleaned = text.replace(/```(?:json)?/gi, '').trim();

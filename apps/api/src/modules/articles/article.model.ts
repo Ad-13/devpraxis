@@ -1,9 +1,5 @@
+import { ARTICLE_SOURCES, ARTICLE_STATUSES, LANGUAGES } from '@devpraxis/shared';
 import { Schema, model, type InferSchemaType } from 'mongoose';
-
-export const LANGUAGES = ['ru', 'en', 'de'] as const;
-export const SOURCES = ['manual', 'notion', 'upload', 'ai-translation'] as const;
-export type ArticleSource = (typeof SOURCES)[number];
-export type Language = (typeof LANGUAGES)[number];
 
 const articleSchema = new Schema(
   {
@@ -17,9 +13,9 @@ const articleSchema = new Schema(
       index: true,
     },
     language: { type: String, enum: LANGUAGES, required: true },
-    status: { type: String, enum: ['draft', 'published'], default: 'draft', index: true },
+    status: { type: String, enum: ARTICLE_STATUSES, default: 'draft', index: true },
     publishedAt: { type: Date },
-    source: { type: String, enum: SOURCES, default: 'manual' },
+    source: { type: String, enum: ARTICLE_SOURCES, default: 'manual' },
     translationOf: { type: Schema.Types.ObjectId, ref: 'Article' },
     favoritesCount: { type: Number, default: 0 },
   },
@@ -32,7 +28,7 @@ articleSchema.set('toJSON', {
     const { _id, ...rest } = ret;
     return { id: String(_id), ...rest };
   },
-})
+});
 
 articleSchema.index({ title: 'text', content: 'text' });
 

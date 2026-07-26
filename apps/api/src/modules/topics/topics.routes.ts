@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { requireAuth } from '#middleware/requireAuth';
 import { validateBody } from '#middleware/validateBody';
 import * as topicsService from '#modules/topics/topics.service';
-import { idParamSchema } from '#modules/articles/article.schemas';
+import { idParamSchema } from '@devpraxis/shared';
 import { validateParams } from '#middleware/validateParams';
 import { requireCsrf } from '#modules/auth/requireCsrf';
 

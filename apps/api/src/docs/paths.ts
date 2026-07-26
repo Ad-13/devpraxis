@@ -1,6 +1,5 @@
 import type { z } from 'zod';
 
-import { registerSchema, loginSchema } from '#modules/auth/auth.schemas';
 import { createTopicSchema } from '#modules/topics/topics.routes';
 import {
   createArticleSchema,
@@ -8,10 +7,14 @@ import {
   notionImportSchema,
   feedQuerySchema,
   uploadQuerySchema,
-} from '#modules/articles/article.schemas';
-import { summarySchema, questionsSchema, translateSchema, chatSchema } from '#modules/ai/ai.schemas';
+  summarySchema,
+  questionsSchema,
+  translateSchema,
+  chatSchema,
+  registerSchema,
+  loginSchema
+} from '@devpraxis/shared';
 
-/* Единственное место, где схема получает имя для документации */
 export const schemaRegistry = {
   RegisterInput: registerSchema,
   LoginInput: loginSchema,

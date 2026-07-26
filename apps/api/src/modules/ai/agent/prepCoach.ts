@@ -10,8 +10,8 @@ import {
 import { z } from 'zod';
 
 import { env } from '#config/env';
-import { DEFAULT_AI_MODEL, type AiModelId } from '#config/aiModels';
-import { ArticleModel, LANGUAGES } from '#modules/articles/article.model';
+import { DEFAULT_AI_MODEL, LANGUAGES, type AiModelId } from '@devpraxis/shared';
+import { ArticleModel } from '#modules/articles/article.model';
 
 setDefaultOpenAIClient(new OpenAI({ baseURL: env.OLLAMA_BASE_URL, apiKey: 'ollama' }));
 setOpenAIAPI('chat_completions');

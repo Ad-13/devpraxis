@@ -2,15 +2,16 @@ import { startSession, type QueryFilter } from 'mongoose';
 
 import { ApiError } from '#utils/ApiError';
 import { ensureUniqueSlug } from '#utils/slug';
-import { ArticleModel, type Article, type ArticleSource } from '#modules/articles/article.model';
+import { ArticleModel, type Article } from '#modules/articles/article.model';
 import { TopicModel } from '#modules/topics/topic.model';
 import { UserModel } from '#modules/users/user.model';
 
 import type {
+  ArticleSource,
   CreateArticleDto,
   FeedQuery,
   UpdateArticleDto,
-} from '#modules/articles/article.schemas';
+} from '@devpraxis/shared';
 
 /* helpers */
 

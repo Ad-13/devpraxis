@@ -4,13 +4,13 @@ import type { ParamsDictionary } from 'express-serve-static-core';
 import { ApiError } from '#utils/ApiError';
 import * as articlesService from '#modules/articles/articles.service';
 import { importFromNotion } from '#modules/articles/import/notion.provider';
-import { feedQuerySchema, uploadQuerySchema } from '#modules/articles/article.schemas';
+import { feedQuerySchema, uploadQuerySchema } from '@devpraxis/shared';
 
 import type {
   CreateArticleDto,
   NotionImportDto,
   UpdateArticleDto,
-} from '#modules/articles/article.schemas';
+} from '@devpraxis/shared';
 import { currentUserId } from '#utils/currentUserId';
 
 

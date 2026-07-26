@@ -9,7 +9,7 @@ import {
   idParamSchema,
   notionImportSchema,
   updateArticleSchema,
-} from '#modules/articles/article.schemas';
+} from '@devpraxis/shared';
 import { validateParams } from '#middleware/validateParams';
 import { requireCsrf } from '#modules/auth/requireCsrf';
 

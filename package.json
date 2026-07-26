@@ -7,15 +7,17 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -n api,web -c yellow,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev": "npm run build --workspace @devpraxis/shared && concurrently -n shared,api,web -c magenta,yellow,cyan \"npm:dev:shared\" \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:shared": "npm run dev --workspace @devpraxis/shared",
     "dev:api": "npm run dev --workspace @devpraxis/api",
     "dev:web": "npm run dev --workspace @devpraxis/web",
-    "typecheck": "npm run typecheck --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspace @devpraxis/shared && npm run build --workspaces --if-present",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "npm run build --workspace @devpraxis/shared && npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm run typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

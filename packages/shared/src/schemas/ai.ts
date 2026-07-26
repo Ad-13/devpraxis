@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { AI_MODEL_IDS } from '#config/aiModels';
-import { LANGUAGES } from '#modules/articles/article.model';
+import { AI_LIMITS, AI_MODEL_IDS } from '../domain/ai.ts';
+import { LANGUAGES } from '../domain/language.ts';
 
 const modelField = z.enum(AI_MODEL_IDS).optional();
 
@@ -9,7 +9,12 @@ export const summarySchema = z.object({ model: modelField });
 
 export const questionsSchema = z.object({
   model: modelField,
-  count: z.coerce.number().int().min(3).max(10).default(5),
+  count: z.coerce
+    .number()
+    .int()
+    .min(AI_LIMITS.questionsMin)
+    .max(AI_LIMITS.questionsMax)
+    .default(AI_LIMITS.questionsDefault),
 });
 
 export const translateSchema = z.object({
@@ -23,11 +28,12 @@ export const chatSchema = z.object({
     .array(
       z.object({
         role: z.enum(['user', 'assistant']),
-        content: z.string().min(1).max(4000),
+        content: z.string().min(1).max(AI_LIMITS.chatMessageLength),
       }),
     )
     .min(1)
-    .max(20),
+    .max(AI_LIMITS.chatMessagesMax),
 });
 
 export type ChatDto = z.infer<typeof chatSchema>;
+export type ChatMessage = ChatDto['messages'][number];
