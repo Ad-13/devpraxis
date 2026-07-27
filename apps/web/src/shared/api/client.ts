@@ -2,13 +2,9 @@
 
 import { AUTH_COOKIES, CSRF_HEADER } from '@devpraxis/shared';
 
-import { MUTATING_METHODS, performRequest, type ApiResult, type RequestOptions } from './fetcher';
+import { readCookie } from '@/shared/lib/browserCookies';
 
-function readCookie(name: string): string | undefined {
-  const prefix = `${encodeURIComponent(name)}=`;
-  const match = document.cookie.split('; ').find((entry) => entry.startsWith(prefix));
-  return match ? decodeURIComponent(match.slice(prefix.length)) : undefined;
-}
+import { MUTATING_METHODS, performRequest, type ApiResult, type RequestOptions } from './fetcher';
 
 export async function apiBrowser<T>(
   path: string,

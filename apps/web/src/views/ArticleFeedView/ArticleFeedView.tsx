@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
-import { ArticleList } from '@/widgets/article-list/ui/ArticleList';
-import { ArticleListSkeleton } from '@/widgets/article-list/ui/ArticleListSkeleton';
+import { ArticleList } from '@/widgets/ArticleList';
+import { ArticleListSkeleton } from '@/widgets/ArticleList/ArticleListSkeleton';
 import { feedQueryKey, parseFeedSearchParams } from '@/shared/lib/feedSearchParams';
 
 import styles from './ArticleFeedView.module.css';
