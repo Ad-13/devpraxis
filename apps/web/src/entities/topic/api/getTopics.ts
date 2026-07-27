@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { cache } from 'react';
+
 import { apiServer } from '@/shared/api';
 
 export interface TopicItem {
@@ -8,6 +10,6 @@ export interface TopicItem {
   slug: string;
 }
 
-export async function getTopics() {
+export const getTopics = cache(async () => {
   return apiServer<TopicItem[]>('/api/topics');
-}
+});

@@ -22,10 +22,24 @@ export async function Header() {
         </Link>
 
         <nav className={styles.nav} aria-label="Main">
+          {user && (
+            <div className={styles.links}>
+              <Link href="/my" className={styles.link}>
+                My articles
+              </Link>
+              <Link href="/favorites" className={styles.link}>
+                Favorites
+              </Link>
+            </div>
+          )}
+
           <ThemeSwitcher initial={accent} />
 
           {user ? (
             <>
+              <Link href="/new" className={styles.cta}>
+                New article
+              </Link>
               <span className={styles.user}>{user.name}</span>
               <form action={logoutAction}>
                 <button type="submit" className={styles.link}>

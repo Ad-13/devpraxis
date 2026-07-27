@@ -10,10 +10,13 @@ import type {
   ArticleSource,
   CreateArticleDto,
   FeedQuery,
+  MyArticlesQuery,
   UpdateArticleDto,
 } from '@devpraxis/shared';
 
 /* helpers */
+
+const LIST_PROJECTION = '-content';
 
 async function assertTopicsExist(topicIds: string[]): Promise<void> {
   const found = await TopicModel.countDocuments({ _id: { $in: topicIds } });
@@ -34,6 +37,17 @@ async function findOwnedArticle(id: string, userId: string) {
 const articleSlugTaken = async (slug: string) =>
   Boolean(await ArticleModel.exists({ slug }));
 
+function escapeRegExp(input: string): string {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+async function viewerFavourites(viewerId?: string): Promise<Set<string>> {
+  if (!viewerId) return new Set();
+
+  const viewer = await UserModel.findById(viewerId).select('favorites').lean();
+  return new Set((viewer?.favorites ?? []).map(String));
+}
+
 /* public API */
 export async function listPublished(q: FeedQuery, viewerId?: string) {
   const filter: QueryFilter<Article> = { status: 'published' };
@@ -41,23 +55,26 @@ export async function listPublished(q: FeedQuery, viewerId?: string) {
   if (q.topicId) filter.topicIds = q.topicId;
   if (q.language) filter.language = q.language;
   if (q.authorId) filter.authorId = q.authorId;
-  if (q.search) filter.$text = { $search: q.search };
+
+  if (q.search) {
+    const pattern = new RegExp(escapeRegExp(q.search), 'i');
+    filter.$or = [{ title: pattern }, { content: pattern }];
+  }
 
   const sort =
     q.sort === 'popular'
       ? ({ favoritesCount: -1, publishedAt: -1 } as const)
       : ({ publishedAt: -1 } as const);
 
-  const [docs, total, viewer] = await Promise.all([
+  const [docs, total, favouriteIds] = await Promise.all([
     ArticleModel.find(filter)
+      .select(LIST_PROJECTION)
       .sort(sort)
       .skip((q.page - 1) * q.limit)
       .limit(q.limit),
     ArticleModel.countDocuments(filter),
-    viewerId ? UserModel.findById(viewerId).select('favorites').lean() : null,
+    viewerFavourites(viewerId),
   ]);
-
-  const favouriteIds = new Set((viewer?.favorites ?? []).map(String));
 
   const items = docs.map((doc) => ({
     ...doc.toJSON(),
@@ -74,26 +91,40 @@ export async function listPublished(q: FeedQuery, viewerId?: string) {
   };
 }
 
-export async function getPublishedByIdOrSlug(idOrSlug: string, viewerId?: string) {
+export async function getByIdOrSlug(idOrSlug: string, viewerId?: string) {
   const isObjectId = /^[0-9a-f]{24}$/i.test(idOrSlug);
 
   const article = await ArticleModel.findOne(
-    isObjectId ? { _id: idOrSlug, status: 'published' } : { slug: idOrSlug, status: 'published' },
+    isObjectId ? { _id: idOrSlug } : { slug: idOrSlug },
   );
 
   if (!article) throw ApiError.notFound('Article not found');
 
-  const viewer = viewerId
-    ? await UserModel.findById(viewerId).select('favorites').lean()
-    : null;
+  const isOwner = Boolean(viewerId) && String(article.authorId) === viewerId;
 
-  const isFavorite = (viewer?.favorites ?? []).some((id) => String(id) === article.id);
+  if (article.status !== 'published' && !isOwner) {
+    throw ApiError.notFound('Article not found');
+  }
 
-  return { ...article.toJSON(), isFavorite };
+  const favouriteIds = await viewerFavourites(viewerId);
+
+  return { ...article.toJSON(), isFavorite: favouriteIds.has(article.id) };
 }
 
-export async function listMine(userId: string) {
-  return ArticleModel.find({ authorId: userId }).sort({ updatedAt: -1 });
+export async function listMine(userId: string, q: MyArticlesQuery) {
+  const filter: QueryFilter<Article> = { authorId: userId };
+  if (q.status) filter.status = q.status;
+
+  const docs = await ArticleModel.find(filter)
+    .select(LIST_PROJECTION)
+    .sort({ updatedAt: -1 });
+
+  const favouriteIds = await viewerFavourites(userId);
+
+  return docs.map((doc) => ({
+    ...doc.toJSON(),
+    isFavorite: favouriteIds.has(String(doc._id)),
+  }));
 }
 
 export async function createArticle(
@@ -172,7 +203,16 @@ export async function setFavorite(articleId: string, userId: string, on: boolean
 }
 
 export async function listFavorites(userId: string) {
-  const user = await UserModel.findById(userId);
+  const user = await UserModel.findById(userId).select('favorites').lean();
   if (!user) throw ApiError.notFound('User not found');
-  return ArticleModel.find({ _id: { $in: user.favorites }, status: 'published' });
+
+  const docs = await ArticleModel.find({
+    _id: { $in: user.favorites },
+    status: 'published',
+  })
+    .select(LIST_PROJECTION)
+    .sort({ publishedAt: -1 });
+
+  // Everything on this page is a favourite by definition.
+  return docs.map((doc) => ({ ...doc.toJSON(), isFavorite: true }));
 }

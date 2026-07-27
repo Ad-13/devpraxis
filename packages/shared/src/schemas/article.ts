@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ARTICLE_LIMITS, ARTICLE_SORTS } from '../domain/article.ts';
+import { ARTICLE_LIMITS, ARTICLE_SORTS, ARTICLE_STATUSES } from '../domain/article.ts';
 import { DEFAULT_LANGUAGE, LANGUAGES } from '../domain/language.ts';
 import { objectIdSchema } from './common.ts';
 
@@ -49,6 +49,11 @@ export const uploadQuerySchema = z.object({
   language: z.enum(LANGUAGES).default(DEFAULT_LANGUAGE),
 });
 
+export const myArticlesQuerySchema = z.object({
+  status: z.enum(ARTICLE_STATUSES).optional(),
+});
+
+export type MyArticlesQuery = z.infer<typeof myArticlesQuerySchema>;
 export type CreateArticleDto = z.infer<typeof createArticleSchema>;
 export type UpdateArticleDto = z.infer<typeof updateArticleSchema>;
 export type NotionImportDto = z.infer<typeof notionImportSchema>;

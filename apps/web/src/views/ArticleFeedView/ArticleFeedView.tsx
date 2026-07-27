@@ -1,8 +1,10 @@
 import { Suspense } from 'react';
 
+import { getTopics } from '@/entities/topic/api/getTopics';
+import { feedQueryKey, parseFeedSearchParams } from '@/shared/lib/feedSearchParams';
 import { ArticleList } from '@/widgets/ArticleList';
 import { ArticleListSkeleton } from '@/widgets/ArticleList/ArticleListSkeleton';
-import { feedQueryKey, parseFeedSearchParams } from '@/shared/lib/feedSearchParams';
+import { FeedFilters } from '@/widgets/FeedFilters';
 
 import styles from './ArticleFeedView.module.css';
 
@@ -11,7 +13,8 @@ interface IProps {
 }
 
 export async function ArticleFeedView({ searchParams }: IProps) {
-  const query = parseFeedSearchParams(await searchParams);
+  const [params, topics] = await Promise.all([searchParams, getTopics()]);
+  const query = parseFeedSearchParams(params);
 
   return (
     <main className="container">
@@ -22,6 +25,8 @@ export async function ArticleFeedView({ searchParams }: IProps) {
           Articles on architecture, runtimes and the questions that actually get asked.
         </p>
       </header>
+
+      <FeedFilters topics={topics.data} query={query} />
 
       <Suspense key={feedQueryKey(query)} fallback={<ArticleListSkeleton count={query.limit} />}>
         <ArticleList query={query} />

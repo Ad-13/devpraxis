@@ -63,3 +63,11 @@
 .cta:hover {
   background: var(--accent-bright);
 }
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-right: var(--space-2);
+  border-right: 1px solid var(--line);
+}

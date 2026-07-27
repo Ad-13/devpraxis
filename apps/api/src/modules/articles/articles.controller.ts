@@ -4,7 +4,7 @@ import type { ParamsDictionary } from 'express-serve-static-core';
 import { ApiError } from '#utils/ApiError';
 import * as articlesService from '#modules/articles/articles.service';
 import { importFromNotion } from '#modules/articles/import/notion.provider';
-import { feedQuerySchema, uploadQuerySchema } from '@devpraxis/shared';
+import { feedQuerySchema, myArticlesQuerySchema, uploadQuerySchema } from '@devpraxis/shared';
 
 import type {
   CreateArticleDto,
@@ -21,15 +21,13 @@ export async function feed(req: Request, res: Response): Promise<void> {
 }
 
 export async function getOne(req: Request<{ idOrSlug: string }>, res: Response): Promise<void> {
-  const article = await articlesService.getPublishedByIdOrSlug(
-    req.params.idOrSlug,
-    req.user?.id,
-  );
+  const article = await articlesService.getByIdOrSlug(req.params.idOrSlug, req.user?.id);
   res.json({ data: article });
 }
 
 export async function mine(req: Request, res: Response): Promise<void> {
-  res.json({ data: await articlesService.listMine(currentUserId(req)) });
+  const q = myArticlesQuerySchema.parse(req.query);
+  res.json({ data: await articlesService.listMine(currentUserId(req), q) });
 }
 
 export async function create(
