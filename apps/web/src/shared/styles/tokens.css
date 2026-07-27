@@ -1,4 +1,7 @@
 :root {
+  /* --- Layout --- */
+  --content-width: 72rem;
+
   /* --- surfaces --- */
   --bg: #0d0c0a;
   --surface: #16140f; /* cards, panels */

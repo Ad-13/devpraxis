@@ -1,0 +1,16 @@
+.header {
+  padding: var(--space-8) 0 var(--space-7);
+  max-width: 44rem;
+}
+
+.title {
+  font-size: var(--text-3xl);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.lead {
+  color: var(--ink-muted);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  margin: 0;
+}
