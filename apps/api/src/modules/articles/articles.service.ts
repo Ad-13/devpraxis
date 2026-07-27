@@ -35,8 +35,9 @@ const articleSlugTaken = async (slug: string) =>
   Boolean(await ArticleModel.exists({ slug }));
 
 /* public API */
-export async function listPublished(q: FeedQuery) {
+export async function listPublished(q: FeedQuery, viewerId?: string) {
   const filter: QueryFilter<Article> = { status: 'published' };
+
   if (q.topicId) filter.topicIds = q.topicId;
   if (q.language) filter.language = q.language;
   if (q.authorId) filter.authorId = q.authorId;
@@ -47,31 +48,48 @@ export async function listPublished(q: FeedQuery) {
       ? ({ favoritesCount: -1, publishedAt: -1 } as const)
       : ({ publishedAt: -1 } as const);
 
-  const [items, total] = await Promise.all([
+  const [docs, total, viewer] = await Promise.all([
     ArticleModel.find(filter)
       .sort(sort)
       .skip((q.page - 1) * q.limit)
       .limit(q.limit),
     ArticleModel.countDocuments(filter),
+    viewerId ? UserModel.findById(viewerId).select('favorites').lean() : null,
   ]);
+
+  const favouriteIds = new Set((viewer?.favorites ?? []).map(String));
+
+  const items = docs.map((doc) => ({
+    ...doc.toJSON(),
+    isFavorite: favouriteIds.has(String(doc._id)),
+  }));
 
   return {
     items,
     meta: {
       total,
       page: q.page,
-      pages: Math.ceil(total / q.limit)
-    }
+      pages: Math.ceil(total / q.limit),
+    },
   };
 }
 
-export async function getPublishedByIdOrSlug(idOrSlug: string) {
+export async function getPublishedByIdOrSlug(idOrSlug: string, viewerId?: string) {
   const isObjectId = /^[0-9a-f]{24}$/i.test(idOrSlug);
+
   const article = await ArticleModel.findOne(
     isObjectId ? { _id: idOrSlug, status: 'published' } : { slug: idOrSlug, status: 'published' },
   );
+
   if (!article) throw ApiError.notFound('Article not found');
-  return article;
+
+  const viewer = viewerId
+    ? await UserModel.findById(viewerId).select('favorites').lean()
+    : null;
+
+  const isFavorite = (viewer?.favorites ?? []).some((id) => String(id) === article.id);
+
+  return { ...article.toJSON(), isFavorite };
 }
 
 export async function listMine(userId: string) {

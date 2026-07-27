@@ -67,13 +67,8 @@
   border-radius: var(--radius);
 }
 
-.favorites {
+.actions {
   margin: auto 0 0;
-  font-size: var(--text-sm);
-  color: var(--ink-faint);
-}
-
-.favoritesCount {
-  font-family: var(--font-mono);
-  color: var(--ink-muted);
+  position: relative;
+  z-index: 1;
 }

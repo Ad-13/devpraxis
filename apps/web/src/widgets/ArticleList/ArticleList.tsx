@@ -3,6 +3,7 @@ import type { FeedQuery } from '@devpraxis/shared';
 import { getArticleFeed } from '@/entities/article/api/getArticleFeed';
 import { ArticleCard } from '@/entities/article/ui/ArticleCard';
 import { getTopics } from '@/entities/topic/api/getTopics';
+import { getSession } from '@/entities/session/api/getSession';
 import { buildFeedHref } from '@/shared/lib/feedSearchParams';
 import { Pagination } from '@/shared/ui/Pagination';
 
@@ -13,7 +14,11 @@ interface IProps {
 }
 
 export async function ArticleList({ query }: IProps) {
-  const [feed, topics] = await Promise.all([getArticleFeed(query), getTopics()]);
+  const [feed, topics, user] = await Promise.all([
+    getArticleFeed(query),
+    getTopics(),
+    getSession(),
+  ]);
 
   const topicNames = new Map(topics.data.map((topic) => [topic.id, topic.name]));
   const total = feed.meta?.total ?? feed.data.length;
@@ -38,7 +43,11 @@ export async function ArticleList({ query }: IProps) {
       <ul className={styles.grid}>
         {feed.data.map((article) => (
           <li key={article.id}>
-            <ArticleCard article={article} topicNames={topicNames} />
+            <ArticleCard
+              article={article}
+              topicNames={topicNames}
+              isAuthenticated={user !== null}
+            />
           </li>
         ))}
       </ul>

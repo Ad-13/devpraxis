@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 
 import { fontVariables } from '@/shared/config/fonts';
 import { ACCENT_COOKIE, accentAttribute, parseAccent } from '@/shared/config/theme';
-import { Header } from '@/widgets/Header';
 import '@/shared/styles/index.css';
 
 export const metadata: Metadata = {
@@ -18,10 +17,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang="en" data-accent={accentAttribute(accent)} className={fontVariables}>
-      <body>
-        <Header />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

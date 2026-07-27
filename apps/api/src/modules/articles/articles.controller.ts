@@ -16,12 +16,16 @@ import { currentUserId } from '#utils/currentUserId';
 
 export async function feed(req: Request, res: Response): Promise<void> {
   const q = feedQuerySchema.parse(req.query);
-  const { items, meta } = await articlesService.listPublished(q);
+  const { items, meta } = await articlesService.listPublished(q, req.user?.id);
   res.json({ data: items, meta });
 }
 
 export async function getOne(req: Request<{ idOrSlug: string }>, res: Response): Promise<void> {
-  res.json({ data: await articlesService.getPublishedByIdOrSlug(req.params.idOrSlug) });
+  const article = await articlesService.getPublishedByIdOrSlug(
+    req.params.idOrSlug,
+    req.user?.id,
+  );
+  res.json({ data: article });
 }
 
 export async function mine(req: Request, res: Response): Promise<void> {

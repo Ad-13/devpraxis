@@ -17,6 +17,7 @@ export interface ArticleDetail {
   topicIds: string[];
   authorId: string;
   favoritesCount: number;
+  isFavorite: boolean;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;

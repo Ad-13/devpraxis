@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ArticleBody } from '@/entities/article/ui/ArticleBody';
 import { getArticleBySlug } from '@/entities/article/api/getArticleBySlug';
 import { getTopics } from '@/entities/topic/api/getTopics';
+import { getSession } from '@/entities/session/api/getSession';
+import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 
 import styles from './ArticleView.module.css';
 
@@ -18,7 +20,11 @@ interface IProps {
 }
 
 export async function ArticleView({ slug }: IProps) {
-  const [result, topics] = await Promise.all([getArticleBySlug(slug), getTopics()]);
+  const [result, topics, user] = await Promise.all([
+    getArticleBySlug(slug),
+    getTopics(),
+    getSession(),
+  ]);
 
   if (!result) return null;
 
@@ -40,7 +46,17 @@ export async function ArticleView({ slug }: IProps) {
           ))}
         </ul>
 
-        <h1 className={styles.title}>{article.title}</h1>
+        <h1 className={styles.title}>
+          {article.title}
+          <div className={styles.actions}>
+            <FavoriteButton
+              articleId={article.id}
+              isFavorite={article.isFavorite}
+              count={article.favoritesCount}
+              isAuthenticated={user !== null}
+            />
+          </div>
+        </h1>
 
         <p className={styles.meta}>
           <span className={styles.language}>{article.language}</span>

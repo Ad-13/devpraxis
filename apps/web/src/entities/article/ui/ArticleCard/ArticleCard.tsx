@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import type { ArticleListItem } from '@/entities/article/api/getArticleFeed';
+import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 import { Frame } from '@/shared/ui/Frame';
 
 import styles from './ArticleCard.module.css';
@@ -15,9 +16,10 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
 interface IProps {
   article: ArticleListItem;
   topicNames: ReadonlyMap<string, string>;
+  isAuthenticated: boolean;
 }
 
-export function ArticleCard({ article, topicNames }: IProps) {
+export function ArticleCard({ article, topicNames, isAuthenticated }: IProps) {
   const published = article.publishedAt
     ? dateFormatter.format(new Date(article.publishedAt))
     : null;
@@ -44,9 +46,14 @@ export function ArticleCard({ article, topicNames }: IProps) {
           ))}
         </ul>
 
-        <p className={styles.favorites}>
-          <span className={styles.favoritesCount}>{article.favoritesCount}</span> saved
-        </p>
+        <div className={styles.actions}>
+          <FavoriteButton
+            articleId={article.id}
+            isFavorite={article.isFavorite}
+            count={article.favoritesCount}
+            isAuthenticated={isAuthenticated}
+          />
+        </div>
       </div>
     </Frame>
   );

@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import { attachUser } from '#middleware/attachUser';
 import { requireAuth } from '#middleware/requireAuth';
 import { validateBody } from '#middleware/validateBody';
+import { validateParams } from '#middleware/validateParams';
 import * as controller from '#modules/articles/articles.controller';
+import { requireCsrf } from '#modules/auth/requireCsrf';
 import {
   createArticleSchema,
   idParamSchema,
   notionImportSchema,
   updateArticleSchema,
 } from '@devpraxis/shared';
-import { validateParams } from '#middleware/validateParams';
-import { requireCsrf } from '#modules/auth/requireCsrf';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -20,7 +21,8 @@ const upload = multer({
 
 export const articleRoutes = Router();
 
-articleRoutes.get('/', controller.feed);
+/* Public, but personalised when the caller happens to be signed in. */
+articleRoutes.get('/', attachUser, controller.feed);
 
 articleRoutes.get('/me', requireAuth, controller.mine);
 articleRoutes.get('/favorites/me', requireAuth, controller.favorites);
@@ -28,8 +30,8 @@ articleRoutes.post('/', requireAuth, requireCsrf, validateBody(createArticleSche
 articleRoutes.post('/import/notion', requireAuth, requireCsrf, validateBody(notionImportSchema), controller.importNotion);
 articleRoutes.post('/import/upload', requireAuth, requireCsrf, upload.single('file'), controller.importUpload);
 
-/* wth params */
-articleRoutes.get('/:idOrSlug', controller.getOne);
+/* with params */
+articleRoutes.get('/:idOrSlug', attachUser, controller.getOne);
 articleRoutes.patch('/:id', requireAuth, requireCsrf, validateParams(idParamSchema), validateBody(updateArticleSchema), controller.update);
 articleRoutes.post('/:id/publish', requireAuth, requireCsrf, validateParams(idParamSchema), controller.publish);
 articleRoutes.post('/:id/unpublish', requireAuth, requireCsrf, validateParams(idParamSchema), controller.unpublish);
