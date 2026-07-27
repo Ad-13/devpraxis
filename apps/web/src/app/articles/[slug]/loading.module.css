@@ -1,0 +1,57 @@
+.header {
+  padding: var(--space-8) 0 var(--space-7);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 44rem;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 44rem;
+}
+
+.bar {
+  display: block;
+  height: 0.75rem;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--line) 0%, var(--surface-raised) 50%, var(--line) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s var(--ease-out) infinite;
+}
+
+.tag {
+  width: 8rem;
+}
+.title {
+  width: 80%;
+  height: 2.25rem;
+}
+.meta {
+  width: 12rem;
+}
+.line {
+  width: 100%;
+}
+.line:nth-child(4n) {
+  width: 70%;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
+}
