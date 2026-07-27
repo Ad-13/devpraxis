@@ -1,0 +1,31 @@
+.breadcrumb {
+  padding-top: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.header {
+  padding: var(--space-5) 0 var(--space-6);
+  max-width: 52rem;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  margin: var(--space-3) 0 var(--space-3);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+}
+
+.hint code {
+  font-family: var(--font-mono);
+  color: var(--ink-muted);
+}

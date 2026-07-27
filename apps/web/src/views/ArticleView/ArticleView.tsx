@@ -49,6 +49,11 @@ export async function ArticleView({ slug }: IProps) {
         <h1 className={styles.title}>
           {article.title}
           <div className={styles.actions}>
+            {user?.id === article.authorId && (
+              <Link href={`/articles/${article.slug}/edit`} className={styles.editLink}>
+                Edit
+              </Link>
+            )}
             <FavoriteButton
               articleId={article.id}
               isFavorite={article.isFavorite}

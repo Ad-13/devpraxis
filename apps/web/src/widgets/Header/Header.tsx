@@ -30,6 +30,9 @@ export async function Header() {
               <Link href="/favorites" className={styles.link}>
                 Favorites
               </Link>
+              <Link href="/topics" className={styles.link}>
+                Topics
+              </Link>
             </div>
           )}
 

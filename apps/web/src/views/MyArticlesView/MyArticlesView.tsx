@@ -87,11 +87,16 @@ export async function MyArticlesView({ searchParams }: IProps) {
                 </p>
               </div>
 
-              <ArticleRowActions
-                articleId={article.id}
-                title={article.title}
-                status={article.status}
-              />
+              <div className={styles.rowActions}>
+                <Link href={`/articles/${article.slug}/edit`} className={styles.editLink}>
+                  Edit
+                </Link>
+                <ArticleRowActions
+                  articleId={article.id}
+                  title={article.title}
+                  status={article.status}
+                />
+              </div>
             </li>
           ))}
         </ul>

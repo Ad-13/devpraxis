@@ -1,0 +1,1 @@
+export { ArticleEditView } from './ArticleEditView';

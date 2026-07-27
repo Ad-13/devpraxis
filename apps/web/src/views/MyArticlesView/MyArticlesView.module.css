@@ -120,3 +120,28 @@
   text-align: center;
   color: var(--ink-muted);
 }
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.editLink {
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  clip-path: var(--clip-corner);
+}
+
+.editLink:hover {
+  background: var(--accent-dim);
+}
