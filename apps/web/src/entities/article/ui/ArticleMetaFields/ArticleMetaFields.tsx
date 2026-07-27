@@ -1,10 +1,9 @@
 'use client';
 
-import { ARTICLE_LIMITS, LANGUAGES, LANGUAGE_LABELS } from '@devpraxis/shared';
+import { ARTICLE_LIMITS, LANGUAGES, LANGUAGE_LABELS, type Language } from '@devpraxis/shared';
+import type { ReactNode } from 'react';
 
-import type { ArticleFormState } from '../model/types';
-
-import styles from './ArticleCreate.module.css';
+import styles from './ArticleMetaFields.module.css';
 
 export interface TopicOption {
   id: string;
@@ -13,13 +12,19 @@ export interface TopicOption {
 
 interface IProps {
   topics: readonly TopicOption[];
-  state: ArticleFormState;
+  selected?: readonly string[];
+  language?: Language;
+  errors?: readonly string[];
+  topicCreateSlot?: ReactNode;
 }
 
-export function ArticleMetaFields({ topics, state }: IProps) {
-  const selected = state.values?.topicIds ?? [];
-  const language = state.values?.language ?? LANGUAGES[0];
-
+export function ArticleMetaFields({
+  topics,
+  selected = [],
+  language,
+  errors,
+  topicCreateSlot,
+}: IProps) {
   return (
     <>
       <fieldset className={styles.fieldset}>
@@ -32,7 +37,7 @@ export function ArticleMetaFields({ topics, state }: IProps) {
         </legend>
 
         {topics.length === 0 ? (
-          <p className={styles.hint}>No topics yet. Ask an admin to create some.</p>
+          <p className={styles.hint}>No topics yet — add the first one below.</p>
         ) : (
           <div className={styles.checkboxes}>
             {topics.map((topic) => (
@@ -49,14 +54,16 @@ export function ArticleMetaFields({ topics, state }: IProps) {
           </div>
         )}
 
-        {state.fieldErrors?.topicIds && (
-          <span className={styles.fieldError}>{state.fieldErrors.topicIds.join('. ')}</span>
+        {topicCreateSlot}
+
+        {errors && errors.length > 0 && (
+          <span className={styles.fieldError}>{errors.join('. ')}</span>
         )}
       </fieldset>
 
       <label className={styles.field}>
         <span className={styles.label}>Language</span>
-        <select className={styles.select} name="language" defaultValue={language}>
+        <select className={styles.select} name="language" defaultValue={language ?? LANGUAGES[0]}>
           {LANGUAGES.map((code) => (
             <option key={code} value={code}>
               {LANGUAGE_LABELS[code]}

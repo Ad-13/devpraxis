@@ -3,10 +3,12 @@
 import { ARTICLE_LIMITS } from '@devpraxis/shared';
 import { useActionState } from 'react';
 
+import { ArticleMetaFields, type TopicOption } from '@/entities/article/ui/ArticleMetaFields';
+import { TopicQuickCreate } from '@/features/topic-create';
+
 import { createArticleAction } from '../model/actions';
 import { INITIAL_ARTICLE_STATE } from '../model/types';
 
-import { ArticleMetaFields, type TopicOption } from './ArticleMetaFields';
 import styles from './ArticleCreate.module.css';
 
 export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] }) {
@@ -37,7 +39,13 @@ export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] })
         )}
       </label>
 
-      <ArticleMetaFields topics={topics} state={state} />
+      <ArticleMetaFields
+        topics={topics}
+        selected={state.values?.topicIds}
+        language={state.values?.language}
+        errors={state.fieldErrors?.topicIds}
+        topicCreateSlot={<TopicQuickCreate />}
+      />
 
       <label className={styles.field}>
         <span className={styles.label}>Content — markdown</span>
@@ -62,9 +70,8 @@ export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] })
           className={styles.submit}
           disabled={isPending}
         >
-          {isPending ? 'Publishing…' : 'Publish'}
+          {isPending ? 'Working…' : 'Publish'}
         </button>
-
         <button
           type="submit"
           name="intent"

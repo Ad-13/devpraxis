@@ -1,12 +1,8 @@
 import Link from 'next/link';
 
 import { getTopics } from '@/entities/topic/api/getTopics';
-import {
-  ArticleUploadForm,
-  ArticleWriteForm,
-  NotionImportForm,
-  type TopicOption,
-} from '@/features/article-create';
+import { ArticleUploadForm, ArticleWriteForm, NotionImportForm } from '@/features/article-create';
+import type { TopicOption } from '@/entities/article/ui/ArticleMetaFields';
 
 import styles from './ArticleCreateView.module.css';
 

@@ -1,13 +1,15 @@
 'use client';
 
+import { ARTICLE_LIMITS } from '@devpraxis/shared';
 import { useActionState } from 'react';
+
+import { ArticleMetaFields, type TopicOption } from '@/entities/article/ui/ArticleMetaFields';
+import { TopicQuickCreate } from '@/features/topic-create';
 
 import { uploadArticleAction } from '../model/actions';
 import { INITIAL_ARTICLE_STATE } from '../model/types';
 
-import { ArticleMetaFields, type TopicOption } from './ArticleMetaFields';
 import styles from './ArticleCreate.module.css';
-import { ARTICLE_LIMITS } from '@devpraxis/shared';
 
 export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }) {
   const [state, formAction, isPending] = useActionState(uploadArticleAction, INITIAL_ARTICLE_STATE);
@@ -36,7 +38,13 @@ export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }
         </span>
       </label>
 
-      <ArticleMetaFields topics={topics} state={state} />
+      <ArticleMetaFields
+        topics={topics}
+        selected={state.values?.topicIds}
+        language={state.values?.language}
+        errors={state.fieldErrors?.topicIds}
+        topicCreateSlot={<TopicQuickCreate />}
+      />
 
       <div className={styles.buttons}>
         <button
@@ -46,9 +54,8 @@ export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }
           className={styles.submit}
           disabled={isPending}
         >
-          {isPending ? 'Publishing…' : 'Publish'}
+          {isPending ? 'Working…' : 'Upload and publish'}
         </button>
-
         <button
           type="submit"
           name="intent"
@@ -56,7 +63,7 @@ export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }
           className={styles.secondary}
           disabled={isPending}
         >
-          Save as draft
+          Upload as draft
         </button>
       </div>
     </form>

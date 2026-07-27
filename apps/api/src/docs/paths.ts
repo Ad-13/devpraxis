@@ -1,6 +1,5 @@
 import type { z } from 'zod';
 
-import { createTopicSchema } from '#modules/topics/topics.routes';
 import {
   createArticleSchema,
   updateArticleSchema,
@@ -12,7 +11,8 @@ import {
   translateSchema,
   chatSchema,
   registerSchema,
-  loginSchema
+  loginSchema,
+  createTopicSchema
 } from '@devpraxis/shared';
 
 export const schemaRegistry = {

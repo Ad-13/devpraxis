@@ -2,10 +2,12 @@
 
 import { useActionState } from 'react';
 
+import { ArticleMetaFields, type TopicOption } from '@/entities/article/ui/ArticleMetaFields';
+import { TopicQuickCreate } from '@/features/topic-create';
+
 import { importNotionAction } from '../model/actions';
 import { INITIAL_ARTICLE_STATE } from '../model/types';
 
-import { ArticleMetaFields, type TopicOption } from './ArticleMetaFields';
 import styles from './ArticleCreate.module.css';
 
 export function NotionImportForm({ topics }: { topics: readonly TopicOption[] }) {
@@ -53,7 +55,13 @@ export function NotionImportForm({ topics }: { topics: readonly TopicOption[] })
         )}
       </label>
 
-      <ArticleMetaFields topics={topics} state={state} />
+      <ArticleMetaFields
+        topics={topics}
+        selected={state.values?.topicIds}
+        language={state.values?.language}
+        errors={state.fieldErrors?.topicIds}
+        topicCreateSlot={<TopicQuickCreate />}
+      />
 
       <div className={styles.buttons}>
         <button
@@ -63,9 +71,8 @@ export function NotionImportForm({ topics }: { topics: readonly TopicOption[] })
           className={styles.submit}
           disabled={isPending}
         >
-          {isPending ? 'Publishing…' : 'Publish'}
+          {isPending ? 'Working…' : 'Import and publish'}
         </button>
-
         <button
           type="submit"
           name="intent"
@@ -73,7 +80,7 @@ export function NotionImportForm({ topics }: { topics: readonly TopicOption[] })
           className={styles.secondary}
           disabled={isPending}
         >
-          Save as draft
+          Import as draft
         </button>
       </div>
     </form>
