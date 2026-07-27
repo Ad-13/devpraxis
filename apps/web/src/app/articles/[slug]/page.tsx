@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getArticleBySlug } from '@/entities/article/api/getArticleBySlug';
 import { excerpt } from '@/shared/lib/excerpt';
-import { ArticleView } from '@/views/article';
+import { ArticleView } from '@/views/ArticleView';
 
 interface IProps {
   params: Promise<{ slug: string }>;

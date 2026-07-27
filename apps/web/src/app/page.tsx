@@ -1,4 +1,4 @@
-import { ArticleFeedView } from '@/views/article-feed';
+import { ArticleFeedView } from '@/views/ArticleFeedView';
 
 interface IProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

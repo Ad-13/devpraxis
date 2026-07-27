@@ -2,6 +2,8 @@ import type { Request, Response } from 'express';
 
 import { ApiError } from '#utils/ApiError';
 import * as authService from '#modules/auth/auth.service';
+import { UserModel } from '#modules/users/user.model';
+import { currentUserId } from '#utils/currentUserId';
 
 import type { LoginDto, RegisterDto } from '@devpraxis/shared';
 import { clearAuthCookies, generateCsrfToken, REFRESH_COOKIE, setAuthCookies } from '#modules/auth/cookies';
@@ -24,6 +26,14 @@ export async function login(
 
   setAuthCookies(res, { accessToken, refreshToken, csrfToken: generateCsrfToken() });
   res.json({ data: { user, accessToken } });
+}
+
+export async function me(req: Request, res: Response): Promise<void> {
+  const user = await UserModel.findById(currentUserId(req));
+
+  if (!user) throw ApiError.unauthorized('User no longer exists');
+
+  res.json({ data: { user } });
 }
 
 export async function refresh(req: Request, res: Response): Promise<void> {

@@ -19,6 +19,7 @@ export interface RequestOptions {
   next?: { revalidate?: number | false; tags?: string[] };
   cache?: RequestCache;
   credentials?: RequestCredentials;
+  onResponse?: (response: Response) => void;
 }
 
 export interface ApiResult<T> {
@@ -32,7 +33,16 @@ export async function performRequest<T>(
   url: string,
   options: RequestOptions = {},
 ): Promise<ApiResult<T>> {
-  const { method = 'GET', body, headers = {}, signal, next, cache, credentials } = options;
+  const {
+    method = 'GET',
+    body,
+    headers = {},
+    signal,
+    next,
+    cache,
+    credentials,
+    onResponse,
+  } = options;
 
   const init: NextRequestInit = {
     method,
@@ -58,6 +68,8 @@ export async function performRequest<T>(
       code: 'NETWORK_ERROR',
     });
   }
+
+  onResponse?.(response);
 
   if (response.status === 204) {
     return { data: undefined as T };
