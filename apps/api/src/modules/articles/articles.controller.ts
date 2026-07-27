@@ -6,13 +6,8 @@ import * as articlesService from '#modules/articles/articles.service';
 import { importFromNotion } from '#modules/articles/import/notion.provider';
 import { feedQuerySchema, myArticlesQuerySchema, uploadQuerySchema } from '@devpraxis/shared';
 
-import type {
-  CreateArticleDto,
-  NotionImportDto,
-  UpdateArticleDto,
-} from '@devpraxis/shared';
+import type { CreateArticleDto, NotionImportDto, UpdateArticleDto } from '@devpraxis/shared';
 import { currentUserId } from '#utils/currentUserId';
-
 
 export async function feed(req: Request, res: Response): Promise<void> {
   const q = feedQuerySchema.parse(req.query);
@@ -42,7 +37,9 @@ export async function update(
   req: Request<{ id: string }, unknown, UpdateArticleDto>,
   res: Response,
 ): Promise<void> {
-  res.json({ data: await articlesService.updateArticle(req.params.id, currentUserId(req), req.body) });
+  res.json({
+    data: await articlesService.updateArticle(req.params.id, currentUserId(req), req.body),
+  });
 }
 
 export async function publish(req: Request<{ id: string }>, res: Response): Promise<void> {

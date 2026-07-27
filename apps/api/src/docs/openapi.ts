@@ -45,12 +45,14 @@ function buildResponses(codes: number[]): Record<string, unknown> {
       ...(code === 204
         ? {}
         : {
-          content: {
-            'application/json': {
-              schema: { $ref: `#/components/schemas/${isSuccess ? 'DataEnvelope' : 'ErrorResponse'}` },
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: `#/components/schemas/${isSuccess ? 'DataEnvelope' : 'ErrorResponse'}`,
+                },
+              },
             },
-          },
-        }),
+          }),
     };
   }
   return responses;
@@ -71,7 +73,7 @@ function queryParameters(name: SchemaName): unknown[] {
 const paths: Record<string, Record<string, unknown>> = {};
 
 for (const entry of pathEntries) {
-  const pathItem = paths[entry.path] ??= {};
+  const pathItem = (paths[entry.path] ??= {});
 
   const parameters: unknown[] = [
     ...(entry.params ?? []).map((name) => ({
@@ -90,11 +92,13 @@ for (const entry of pathEntries) {
     ...(parameters.length ? { parameters } : {}),
     ...(entry.body
       ? {
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { $ref: `#/components/schemas/${entry.body}` } } },
-        },
-      }
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': { schema: { $ref: `#/components/schemas/${entry.body}` } },
+            },
+          },
+        }
       : {}),
     responses: buildResponses(entry.responses),
   };

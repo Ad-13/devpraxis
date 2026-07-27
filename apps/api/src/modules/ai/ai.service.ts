@@ -128,14 +128,20 @@ export async function chat(dto: ChatDto) {
     .slice(0, -1)
     .map((m) => `${m.role}: ${m.content}`)
     .join('\n');
-  const input = history ? `Conversation so far:\n${history}\n\nuser: ${lastMessage.content}` : lastMessage.content;
+  const input = history
+    ? `Conversation so far:\n${history}\n\nuser: ${lastMessage.content}`
+    : lastMessage.content;
 
   let result;
   try {
     result = await run(buildPrepCoach(model), input, { maxTurns: 12 });
   } catch (err) {
     if (err instanceof MaxTurnsExceededError) {
-      throw new ApiError(502, 'AI_ERROR', 'Assistant could not converge on an answer, try rephrasing');
+      throw new ApiError(
+        502,
+        'AI_ERROR',
+        'Assistant could not converge on an answer, try rephrasing',
+      );
     }
     throw err;
   }

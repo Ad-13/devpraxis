@@ -39,13 +39,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
             }
           },
           "response": []
@@ -80,13 +75,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
             }
           },
           "response": []
@@ -112,13 +102,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/auth/refresh",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "refresh"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
             }
           },
           "response": []
@@ -129,9 +114,7 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  ""
-                ],
+                "exec": [""],
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {}
@@ -143,13 +126,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/auth/logout",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "logout"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
             }
           },
           "response": []
@@ -169,12 +147,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/topics",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "topics"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["topics"]
             }
           },
           "response": []
@@ -186,13 +160,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/topics/{{topicId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "topics",
-                "{{topicId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["topics", "{{topicId}}"]
             }
           },
           "response": []
@@ -228,12 +197,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/topics",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "topics"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["topics"]
             }
           },
           "response": []
@@ -264,14 +229,8 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/articles/import/upload?topicIds={{topicId}}&language=ru",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "articles",
-                    "import",
-                    "upload"
-                  ],
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "import", "upload"],
                   "query": [
                     {
                       "key": "topicIds",
@@ -302,14 +261,8 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/articles/import/notion",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "articles",
-                    "import",
-                    "notion"
-                  ]
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "import", "notion"]
                 }
               },
               "response": []
@@ -323,12 +276,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"]
             }
           },
           "response": []
@@ -340,12 +289,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles?topicId={{topicId}}&language=ru&sort=popular",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"],
               "query": [
                 {
                   "key": "topicId",
@@ -371,13 +316,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}"]
             }
           },
           "response": []
@@ -389,13 +329,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}"]
             }
           },
           "response": []
@@ -407,13 +342,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleSlug}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleSlug}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleSlug}}"]
             }
           },
           "response": []
@@ -425,12 +355,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles?search=fiber",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"],
               "query": [
                 {
                   "key": "search",
@@ -448,13 +374,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/me",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "me"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "me"]
             }
           },
           "response": []
@@ -466,14 +387,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}/publish",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}",
-                "publish"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}", "publish"]
             }
           },
           "response": []
@@ -510,12 +425,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/articles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"]
             }
           },
           "response": []
@@ -552,13 +463,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}"]
             }
           },
           "response": []
@@ -570,14 +476,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}/favorite",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}",
-                "favorite"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}", "favorite"]
             }
           },
           "response": []
@@ -589,14 +489,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/{{articleId}}/favorite",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "{{articleId}}",
-                "favorite"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "{{articleId}}", "favorite"]
             }
           },
           "response": []
@@ -608,14 +502,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/articles/favorites/me",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "articles",
-                "favorites",
-                "me"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "favorites", "me"]
             }
           },
           "response": []
@@ -632,13 +520,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/ai/models",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "ai",
-                "models"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "models"]
             }
           },
           "response": []
@@ -659,15 +542,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/ai/articles/{{articleId}}/summary",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "ai",
-                "articles",
-                "{{articleId}}",
-                "summary"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "articles", "{{articleId}}", "summary"]
             }
           },
           "response": []
@@ -688,15 +564,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/ai/articles/{{articleId}}/questions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "ai",
-                "articles",
-                "{{articleId}}",
-                "questions"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "articles", "{{articleId}}", "questions"]
             }
           },
           "response": []
@@ -717,15 +586,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/ai/articles/{{articleId}}/translate",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "ai",
-                "articles",
-                "{{articleId}}",
-                "translate"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "articles", "{{articleId}}", "translate"]
             }
           },
           "response": []
@@ -746,13 +608,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/ai/chat",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "ai",
-                "chat"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "chat"]
             }
           },
           "response": []
@@ -777,9 +634,7 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     },
     {
@@ -788,9 +643,7 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     }
   ],

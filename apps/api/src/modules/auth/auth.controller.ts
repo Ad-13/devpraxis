@@ -6,7 +6,12 @@ import { UserModel } from '#modules/users/user.model';
 import { currentUserId } from '#utils/currentUserId';
 
 import type { LoginDto, RegisterDto } from '@devpraxis/shared';
-import { clearAuthCookies, generateCsrfToken, REFRESH_COOKIE, setAuthCookies } from '#modules/auth/cookies';
+import {
+  clearAuthCookies,
+  generateCsrfToken,
+  REFRESH_COOKIE,
+  setAuthCookies,
+} from '#modules/auth/cookies';
 
 export async function register(
   req: Request<unknown, unknown, RegisterDto>,

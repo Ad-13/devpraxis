@@ -20,7 +20,11 @@ export interface CompletionInput {
 
 export interface AIProvider {
   complete(input: CompletionInput): Promise<string>;
-  completeStructured<T>(schema: z.ZodType<T>, schemaName: string, input: CompletionInput): Promise<T>;
+  completeStructured<T>(
+    schema: z.ZodType<T>,
+    schemaName: string,
+    input: CompletionInput,
+  ): Promise<T>;
 }
 
 class OllamaProvider implements AIProvider {

@@ -7,7 +7,7 @@ const topicSchema = new Schema(
       required: true,
       trim: true,
       minlength: 2,
-      maxlength: 50
+      maxlength: 50,
     },
     slug: { type: String, required: true, unique: true },
   },

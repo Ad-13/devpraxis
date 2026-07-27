@@ -12,9 +12,7 @@ const envSchema = z.object({
       message: 'MONGO_URI must be a mongodb:// or mongodb+srv:// connection string',
     }),
 
-  JWT_ACCESS_SECRET: z
-    .string()
-    .min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
+  JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
 
   ACCESS_TOKEN_TTL_MIN: z.coerce.number().int().positive().default(15),
 

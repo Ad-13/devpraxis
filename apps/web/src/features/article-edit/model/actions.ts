@@ -24,7 +24,7 @@ export async function updateArticleAction(
     title: readString(formData, 'title'),
     content: readString(formData, 'content'),
     topicIds: readStrings(formData, 'topicIds'),
-    language: readString(formData, 'language') as Language || DEFAULT_LANGUAGE,
+    language: (readString(formData, 'language') as Language) || DEFAULT_LANGUAGE,
   };
 
   const parsed = createArticleSchema.safeParse(values);

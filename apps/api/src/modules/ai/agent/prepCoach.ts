@@ -29,10 +29,7 @@ const searchArticles = tool({
     const filter: Record<string, unknown> = { status: 'published', $text: { $search: query } };
     if (language) filter.language = language;
 
-    const items = await ArticleModel.find(filter)
-      .limit(5)
-      .select('title language slug')
-      .lean();
+    const items = await ArticleModel.find(filter).limit(5).select('title language slug').lean();
 
     return JSON.stringify(
       items.map((a) => ({ id: String(a._id), title: a.title, language: a.language })),
@@ -42,7 +39,8 @@ const searchArticles = tool({
 
 const getArticle = tool({
   name: 'get_article',
-  description: 'Fetch full content of a published article by its id (from search_articles results).',
+  description:
+    'Fetch full content of a published article by its id (from search_articles results).',
   parameters: z.object({ id: z.string() }),
   execute: async ({ id }) => {
     const article = await ArticleModel.findOne({ _id: id, status: 'published' }).lean();
@@ -55,8 +53,7 @@ export function buildPrepCoach(model: AiModelId = DEFAULT_AI_MODEL): Agent {
   return new Agent({
     name: 'Prep Coach',
     model,
-    instructions:
-      `You are an interview-prep coach for a developer cohort. 
+    instructions: `You are an interview-prep coach for a developer cohort. 
       ALWAYS search the knowledge base first (search_articles), read relevant articles (get_article), and ground your answer in them, mentioning article titles. 
       If the base has nothing relevant, say so explicitly before answering from general knowledge. 
       Answer in the language of the user question. 

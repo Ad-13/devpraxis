@@ -34,8 +34,7 @@ async function findOwnedArticle(id: string, userId: string) {
   return article;
 }
 
-const articleSlugTaken = async (slug: string) =>
-  Boolean(await ArticleModel.exists({ slug }));
+const articleSlugTaken = async (slug: string) => Boolean(await ArticleModel.exists({ slug }));
 
 function escapeRegExp(input: string): string {
   return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -94,9 +93,7 @@ export async function listPublished(q: FeedQuery, viewerId?: string) {
 export async function getByIdOrSlug(idOrSlug: string, viewerId?: string) {
   const isObjectId = /^[0-9a-f]{24}$/i.test(idOrSlug);
 
-  const article = await ArticleModel.findOne(
-    isObjectId ? { _id: idOrSlug } : { slug: idOrSlug },
-  );
+  const article = await ArticleModel.findOne(isObjectId ? { _id: idOrSlug } : { slug: idOrSlug });
 
   if (!article) throw ApiError.notFound('Article not found');
 
@@ -115,9 +112,7 @@ export async function listMine(userId: string, q: MyArticlesQuery) {
   const filter: QueryFilter<Article> = { authorId: userId };
   if (q.status) filter.status = q.status;
 
-  const docs = await ArticleModel.find(filter)
-    .select(LIST_PROJECTION)
-    .sort({ updatedAt: -1 });
+  const docs = await ArticleModel.find(filter).select(LIST_PROJECTION).sort({ updatedAt: -1 });
 
   const favouriteIds = await viewerFavourites(userId);
 
@@ -131,7 +126,7 @@ export async function createArticle(
   userId: string,
   dto: CreateArticleDto,
   source: ArticleSource = 'manual',
-  extra?: { translationOf?: string }
+  extra?: { translationOf?: string },
 ) {
   await assertTopicsExist(dto.topicIds);
   const slug = await ensureUniqueSlug(dto.title, articleSlugTaken);
@@ -166,11 +161,7 @@ export async function deleteArticle(id: string, userId: string) {
     await session.withTransaction(async () => {
       await ArticleModel.deleteOne({ _id: id }, { session });
 
-      await UserModel.updateMany(
-        { favorites: id },
-        { $pull: { favorites: id } },
-        { session },
-      );
+      await UserModel.updateMany({ favorites: id }, { $pull: { favorites: id } }, { session });
 
       await ArticleModel.updateMany(
         { translationOf: id },
@@ -189,13 +180,13 @@ export async function setFavorite(articleId: string, userId: string, on: boolean
 
   const res = on
     ? await UserModel.updateOne(
-      { _id: userId, favorites: { $ne: articleId } },
-      { $addToSet: { favorites: articleId } },
-    )
+        { _id: userId, favorites: { $ne: articleId } },
+        { $addToSet: { favorites: articleId } },
+      )
     : await UserModel.updateOne(
-      { _id: userId, favorites: articleId },
-      { $pull: { favorites: articleId } },
-    );
+        { _id: userId, favorites: articleId },
+        { $pull: { favorites: articleId } },
+      );
 
   if (res.modifiedCount > 0) {
     await ArticleModel.updateOne({ _id: articleId }, { $inc: { favoritesCount: on ? 1 : -1 } });

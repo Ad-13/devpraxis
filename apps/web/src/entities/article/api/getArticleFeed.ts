@@ -1,11 +1,6 @@
 import 'server-only';
 
-import type {
-  ArticleSource,
-  ArticleStatus,
-  FeedQueryParams,
-  Language,
-} from '@devpraxis/shared';
+import type { ArticleSource, ArticleStatus, FeedQueryParams, Language } from '@devpraxis/shared';
 
 import { apiServer } from '@/shared/api';
 

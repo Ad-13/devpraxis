@@ -81,7 +81,7 @@ export async function register(dto: RegisterDto) {
 
 export async function login(dto: LoginDto) {
   const user = await UserModel.findOne({ email: dto.email }).select('+passwordHash');
-  const isPasswordValid = user && await bcrypt.compare(dto.password, user.passwordHash);
+  const isPasswordValid = user && (await bcrypt.compare(dto.password, user.passwordHash));
 
   if (!user || !isPasswordValid) {
     throw ApiError.unauthorized('Invalid email or password');

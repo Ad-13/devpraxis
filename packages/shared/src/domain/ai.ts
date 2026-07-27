@@ -7,7 +7,7 @@ export const AI_MODELS: ReadonlyArray<{ id: AiModelId; label: string; isDefault:
   {
     id: 'gpt-oss:120b-cloud',
     label: 'GPT-OSS 120B (Ollama Cloud)',
-    isDefault: true
+    isDefault: true,
   },
 ];
 

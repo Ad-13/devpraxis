@@ -1,7 +1,13 @@
 import type { Request, Response } from 'express';
 import type { ParamsDictionary } from 'express-serve-static-core';
 
-import { AI_MODELS, summarySchema, questionsSchema, translateSchema, type ChatDto } from '@devpraxis/shared';
+import {
+  AI_MODELS,
+  summarySchema,
+  questionsSchema,
+  translateSchema,
+  type ChatDto,
+} from '@devpraxis/shared';
 import { currentUserId } from '#utils/currentUserId';
 import * as aiService from '#modules/ai/ai.service';
 
