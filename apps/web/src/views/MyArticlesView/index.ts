@@ -1,0 +1,1 @@
+export { MyArticlesView } from './MyArticlesView';

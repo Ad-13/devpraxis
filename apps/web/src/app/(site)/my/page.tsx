@@ -2,19 +2,19 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getSession } from '@/entities/session/api/getSession';
-import { ArticleCreateView } from '@/views/ArticleCreateView';
+import { MyArticlesView } from '@/views/MyArticlesView';
 
 export const metadata: Metadata = {
-  title: 'New article — DevPraxis',
+  title: 'My articles — DevPraxis',
 };
 
 interface IProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function NewArticlePage({ searchParams }: IProps) {
+export default async function MyArticlesPage({ searchParams }: IProps) {
   const user = await getSession();
   if (!user) redirect('/login');
 
-  return <ArticleCreateView searchParams={searchParams} />;
+  return <MyArticlesView searchParams={searchParams} />;
 }
