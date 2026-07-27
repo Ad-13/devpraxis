@@ -1,20 +1,31 @@
-import { Frame } from '@/shared/ui/Frame';
+import { getArticleFeed } from '@/entities/article/api/getArticleFeed';
+import { isApiClientError } from '@/shared/api';
 
-export default function HomePage() {
+export default async function HomePage() {
+  let data, meta;
+  try {
+    const { data: data1, meta: meta1 } = await getArticleFeed({ limit: 5 });
+    data = data1;
+    meta = meta1;
+  } catch (error) {
+    if (isApiClientError(error)) {
+      return (
+        <main>
+          API error {error.status}: {error.message}
+        </main>
+      );
+    }
+    throw error;
+  }
+
   return (
-    <main className="container" style={{ paddingBlock: 'var(--space-8)' }}>
-      <p className="label">Foundation check</p>
-
-      <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--accent)' }}>DEVPRAXIS</h1>
-
-      <Frame interactive className="frame-demo">
-        <div style={{ padding: 'var(--space-5)' }}>
-          <p className="label">Topic</p>
-          <p style={{ color: 'var(--ink-muted)', marginTop: 'var(--space-2)' }}>
-            Tokens, fonts, geometry and theming are operational.
-          </p>
-        </div>
-      </Frame>
+    <main>
+      <p>total: {meta?.total ?? 0}</p>
+      <ul>
+        {data.map((article) => (
+          <li key={article.id}>{article.title}</li>
+        ))}
+      </ul>
     </main>
   );
 }

@@ -4,9 +4,11 @@ import type { Response } from 'express';
 
 import { env } from '#config/env';
 
-export const ACCESS_COOKIE = 'accessToken';
-export const REFRESH_COOKIE = 'refreshToken';
-export const CSRF_COOKIE = 'csrfToken';
+import { AUTH_COOKIES } from '@devpraxis/shared';
+
+export const ACCESS_COOKIE = AUTH_COOKIES.access;
+export const REFRESH_COOKIE = AUTH_COOKIES.refresh;
+export const CSRF_COOKIE = AUTH_COOKIES.csrf;
 
 const isProd = env.NODE_ENV === 'production';
 const base = { secure: isProd, sameSite: 'lax' as const };
