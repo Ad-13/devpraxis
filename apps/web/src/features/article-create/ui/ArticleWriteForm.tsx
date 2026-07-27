@@ -54,9 +54,27 @@ export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] })
         )}
       </label>
 
-      <button type="submit" className={styles.submit} disabled={isPending}>
-        {isPending ? 'Publishing…' : 'Publish article'}
-      </button>
+      <div className={styles.buttons}>
+        <button
+          type="submit"
+          name="intent"
+          value="publish"
+          className={styles.submit}
+          disabled={isPending}
+        >
+          {isPending ? 'Publishing…' : 'Publish'}
+        </button>
+
+        <button
+          type="submit"
+          name="intent"
+          value="draft"
+          className={styles.secondary}
+          disabled={isPending}
+        >
+          Save as draft
+        </button>
+      </div>
     </form>
   );
 }

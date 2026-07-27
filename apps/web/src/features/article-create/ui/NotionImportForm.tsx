@@ -55,9 +55,27 @@ export function NotionImportForm({ topics }: { topics: readonly TopicOption[] })
 
       <ArticleMetaFields topics={topics} state={state} />
 
-      <button type="submit" className={styles.submit} disabled={isPending}>
-        {isPending ? 'Importing…' : 'Import and publish'}
-      </button>
+      <div className={styles.buttons}>
+        <button
+          type="submit"
+          name="intent"
+          value="publish"
+          className={styles.submit}
+          disabled={isPending}
+        >
+          {isPending ? 'Publishing…' : 'Publish'}
+        </button>
+
+        <button
+          type="submit"
+          name="intent"
+          value="draft"
+          className={styles.secondary}
+          disabled={isPending}
+        >
+          Save as draft
+        </button>
+      </div>
     </form>
   );
 }

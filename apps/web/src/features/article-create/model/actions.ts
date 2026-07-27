@@ -36,8 +36,14 @@ function toErrorState(error: unknown, values: ArticleFormState['values']): Artic
   return { status: 'error', message: 'Something went wrong. Please try again.', values };
 }
 
-async function publish(article: CreatedArticle): Promise<void> {
-  await apiServer(`/api/articles/${article.id}/publish`, { method: 'POST' });
+function wantsPublish(formData: FormData): boolean {
+  return readString(formData, 'intent') !== 'draft';
+}
+
+async function finish(created: CreatedArticle, publishNow: boolean): Promise<void> {
+  if (publishNow) {
+    await apiServer(`/api/articles/${created.id}/publish`, { method: 'POST' });
+  }
 }
 
 export async function createArticleAction(
@@ -66,12 +72,12 @@ export async function createArticleAction(
       body: parsed.data,
     });
     created = result.data;
-    await publish(created);
+    await finish(created, wantsPublish(formData));
   } catch (error) {
     return toErrorState(error, values);
   }
 
-  redirect(`/articles/${created.slug}`);
+  redirect(wantsPublish(formData) ? `/articles/${created.slug}` : '/my?status=draft');
 }
 
 export async function uploadArticleAction(
@@ -118,12 +124,12 @@ export async function uploadArticleAction(
       { method: 'POST', body: outgoing },
     );
     created = result.data;
-    await publish(created);
+    await finish(created, wantsPublish(formData));
   } catch (error) {
     return toErrorState(error, values);
   }
 
-  redirect(`/articles/${created.slug}`);
+  redirect(wantsPublish(formData) ? `/articles/${created.slug}` : '/my?status=draft');
 }
 
 export async function importNotionAction(
@@ -152,10 +158,10 @@ export async function importNotionAction(
       body: parsed.data,
     });
     created = result.data;
-    await publish(created);
+    await finish(created, wantsPublish(formData));
   } catch (error) {
     return toErrorState(error, values);
   }
 
-  redirect(`/articles/${created.slug}`);
+  redirect(wantsPublish(formData) ? `/articles/${created.slug}` : '/my?status=draft');
 }
