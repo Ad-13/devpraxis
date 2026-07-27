@@ -1,6 +1,6 @@
 'use client';
 
-import { ARTICLE_LIMITS, LANGUAGES, LANGUAGE_LABELS, type Language } from '@devpraxis/shared';
+import { ARTICLE_LIMITS, LANGUAGES, LANGUAGE_LABELS } from '@devpraxis/shared';
 import type { ReactNode } from 'react';
 
 import styles from './ArticleMetaFields.module.css';
@@ -13,7 +13,7 @@ export interface TopicOption {
 interface IProps {
   topics: readonly TopicOption[];
   selected?: readonly string[];
-  language?: Language;
+  language?: string;
   errors?: readonly string[];
   topicCreateSlot?: ReactNode;
 }

@@ -1,5 +1,3 @@
-import type { Language } from "@devpraxis/shared";
-
 export interface ArticleFormState {
   status: 'idle' | 'error';
   message?: string;
@@ -9,7 +7,7 @@ export interface ArticleFormState {
     content?: string;
     pageId?: string;
     topicIds?: string[];
-    language?: Language;
+    language?: string;
   };
 }
 
