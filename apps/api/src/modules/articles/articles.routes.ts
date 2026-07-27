@@ -8,6 +8,7 @@ import { validateParams } from '#middleware/validateParams';
 import * as controller from '#modules/articles/articles.controller';
 import { requireCsrf } from '#modules/auth/requireCsrf';
 import {
+  ARTICLE_LIMITS,
   createArticleSchema,
   idParamSchema,
   notionImportSchema,
@@ -16,7 +17,7 @@ import {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 1_000_000 },
+  limits: { fileSize: ARTICLE_LIMITS.uploadMaxBytes },
 });
 
 export const articleRoutes = Router();

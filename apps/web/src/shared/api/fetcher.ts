@@ -44,16 +44,18 @@ export async function performRequest<T>(
     onResponse,
   } = options;
 
+  const isMultipart = body instanceof FormData;
+
   const init: NextRequestInit = {
     method,
     headers: {
       Accept: 'application/json',
-      ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
+      ...(body === undefined || isMultipart ? {} : { 'Content-Type': 'application/json' }),
       ...headers,
     },
   };
 
-  if (body !== undefined) init.body = JSON.stringify(body);
+  if (body !== undefined) init.body = isMultipart ? body : JSON.stringify(body);
   if (signal) init.signal = signal;
   if (next) init.next = next;
   if (cache) init.cache = cache;
@@ -71,6 +73,7 @@ export async function performRequest<T>(
 
   onResponse?.(response);
 
+  // 204 No Content: logout and delete answer with an empty body.
   if (response.status === 204) {
     return { data: undefined as T };
   }

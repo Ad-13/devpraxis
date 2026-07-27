@@ -11,6 +11,7 @@ export const ARTICLE_LIMITS = {
   topicsMax: 3,
   feedPageSizeDefault: 10,
   feedPageSizeMax: 50,
+  uploadMaxBytes: 1_000_000,
 } as const;
 
 export const ARTICLE_SORTS = ['recent', 'popular'] as const;

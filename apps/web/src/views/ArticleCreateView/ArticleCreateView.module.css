@@ -1,0 +1,36 @@
+.header {
+  padding: var(--space-7) 0 var(--space-5);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  margin: var(--space-3) 0 0;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-6);
+}
+
+.tab {
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  border-bottom: 2px solid transparent;
+  transition:
+    color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab[aria-current='page'] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
