@@ -7,6 +7,7 @@ import { getSession } from '@/entities/session/api/getSession';
 import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 
 import styles from './ArticleView.module.css';
+import { ArticleAiPanel } from '@/features/ai-tools';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
@@ -32,7 +33,7 @@ export async function ArticleView({ slug }: IProps) {
   const topicNames = new Map(topics.data.map((topic) => [topic.id, topic.name]));
 
   return (
-    <main className="container">
+    <main className="container rise">
       <nav className={styles.breadcrumb} aria-label="Breadcrumb">
         <Link href="/">← Back to the feed</Link>
       </nav>
@@ -77,6 +78,8 @@ export async function ArticleView({ slug }: IProps) {
           <span>{article.favoritesCount} saved</span>
         </p>
       </header>
+
+      {user && <ArticleAiPanel articleId={article.id} articleLanguage={article.language} />}
 
       <ArticleBody content={article.content} />
     </main>

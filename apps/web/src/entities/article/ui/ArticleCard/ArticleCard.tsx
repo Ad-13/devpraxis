@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { ArticleListItem } from '@/entities/article/api/getArticleFeed';
 import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 import { Frame } from '@/shared/ui/Frame';
+import { SummaryButton } from '@/features/ai-tools';
 
 import styles from './ArticleCard.module.css';
 
@@ -47,6 +48,7 @@ export function ArticleCard({ article, topicNames, isAuthenticated }: IProps) {
         </ul>
 
         <div className={styles.actions}>
+          {isAuthenticated && <SummaryButton articleId={article.id} title={article.title} />}
           <FavoriteButton
             articleId={article.id}
             isFavorite={article.isFavorite}

@@ -1,0 +1,136 @@
+.panel {
+  margin: var(--space-7) 0;
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  clip-path: var(--clip-corner);
+  max-width: 52rem;
+}
+
+.head {
+  margin-bottom: var(--space-4);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--accent);
+}
+
+.note {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  clip-path: var(--clip-corner);
+  transition:
+    border-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out);
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: progress;
+}
+
+.pending {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 3s;
+  }
+}
+
+.error {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(184, 58, 46, 0.12);
+  border-left: 2px solid var(--danger);
+  font-size: var(--text-sm);
+}
+
+.result {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.resultTitle {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--ink-faint);
+}
+
+.summary {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.questions {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.question summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  color: var(--ink);
+}
+
+.question summary:hover {
+  color: var(--accent);
+}
+
+.answer {
+  margin: var(--space-2) 0 0;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
