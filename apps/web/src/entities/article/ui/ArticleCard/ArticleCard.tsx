@@ -1,9 +1,8 @@
 import Link from 'next/link';
 
 import type { ArticleListItem } from '@/entities/article/api/getArticleFeed';
-import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
-import { Frame } from '@/shared/ui/Frame';
 import { SummaryButton } from '@/features/ai-tools';
+import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 
 import styles from './ArticleCard.module.css';
 
@@ -26,37 +25,35 @@ export function ArticleCard({ article, topicNames, isAuthenticated }: IProps) {
     : null;
 
   return (
-    <Frame as="article" interactive className={styles.card}>
-      <div className={styles.body}>
-        <div className={styles.meta}>
-          <span className={styles.language}>{article.language}</span>
-          {published && <time dateTime={article.publishedAt ?? undefined}>{published}</time>}
-        </div>
+    <article className={styles.row}>
+      <span className={styles.rail} aria-hidden="true" />
 
+      <span className={styles.lang}>{article.language}</span>
+
+      <div className={styles.body}>
         <h2 className={styles.title}>
           <Link href={`/articles/${article.slug}`} className={styles.link}>
             {article.title}
           </Link>
         </h2>
 
-        <ul className={styles.topics}>
-          {article.topicIds.map((id) => (
-            <li key={id} className={styles.topic}>
-              {topicNames.get(id) ?? '—'}
-            </li>
-          ))}
-        </ul>
-
-        <div className={styles.actions}>
-          {isAuthenticated && <SummaryButton articleId={article.id} title={article.title} />}
-          <FavoriteButton
-            articleId={article.id}
-            isFavorite={article.isFavorite}
-            count={article.favoritesCount}
-            isAuthenticated={isAuthenticated}
-          />
-        </div>
+        <p className={styles.meta}>
+          <span className={styles.topics}>
+            {article.topicIds.map((id) => topicNames.get(id) ?? '—').join(' · ')}
+          </span>
+          {published && <time dateTime={article.publishedAt ?? undefined}>{published}</time>}
+        </p>
       </div>
-    </Frame>
+
+      <div className={styles.actions}>
+        {isAuthenticated && <SummaryButton articleId={article.id} title={article.title} />}
+        <FavoriteButton
+          articleId={article.id}
+          isFavorite={article.isFavorite}
+          count={article.favoritesCount}
+          isAuthenticated={isAuthenticated}
+        />
+      </div>
+    </article>
   );
 }

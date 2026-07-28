@@ -5,6 +5,7 @@ import { getMyArticles } from '@/entities/article/api/getMyArticles';
 import { ArticleRowActions } from '@/features/article-manage';
 
 import styles from './MyArticlesView.module.css';
+import { buttonClass } from '@/shared/ui/Button';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
@@ -40,7 +41,7 @@ export async function MyArticlesView({ searchParams }: IProps) {
           <p className="label">Your workspace</p>
           <h1 className={styles.title}>My articles</h1>
         </div>
-        <Link href="/new" className={styles.cta}>
+        <Link href="/new" className={buttonClass({ variant: 'primary' })}>
           New article
         </Link>
       </header>
@@ -88,7 +89,10 @@ export async function MyArticlesView({ searchParams }: IProps) {
               </div>
 
               <div className={styles.rowActions}>
-                <Link href={`/articles/${article.slug}/edit`} className={styles.editLink}>
+                <Link
+                  href={`/articles/${article.slug}/edit`}
+                  className={buttonClass({ variant: 'ghost', size: 'sm' })}
+                >
                   Edit
                 </Link>
                 <ArticleRowActions

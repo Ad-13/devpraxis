@@ -3,6 +3,8 @@
 import { TOPIC_LIMITS } from '@devpraxis/shared';
 import { useRef, useState, useTransition, type KeyboardEvent } from 'react';
 
+import { Button } from '@/shared/ui/Button';
+
 import { createTopicAction } from '../model/actions';
 
 import styles from './TopicQuickCreate.module.css';
@@ -48,9 +50,9 @@ export function TopicQuickCreate() {
           disabled={isPending}
           aria-label="New topic name"
         />
-        <button type="button" className={styles.button} onClick={submit} disabled={isPending}>
+        <Button size="sm" onClick={submit} disabled={isPending}>
           {isPending ? 'Adding…' : 'Add'}
-        </button>
+        </Button>
       </div>
 
       {error && (

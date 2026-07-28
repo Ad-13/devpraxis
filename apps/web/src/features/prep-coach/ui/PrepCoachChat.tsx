@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useTransition, type SubmitEvent } from 're
 import { sendChatMessageAction } from '../model/actions';
 
 import styles from './PrepCoachChat.module.css';
+import { Button } from '@/shared/ui/Button';
 
 const SUGGESTIONS = [
   'Explain the event loop in Node.js',
@@ -63,14 +64,14 @@ export function PrepCoachChat() {
             </p>
             <div className={styles.suggestions}>
               {SUGGESTIONS.map((text) => (
-                <button
+                <Button
                   key={text}
-                  type="button"
                   className={styles.suggestion}
+                  variant="quiet"
                   onClick={() => send(text)}
                 >
                   {text}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -116,9 +117,9 @@ export function PrepCoachChat() {
           disabled={isPending}
           autoComplete="off"
         />
-        <button type="submit" className={styles.send} disabled={isPending}>
+        <Button type="submit" variant="primary" disabled={isPending}>
           {isPending ? 'Asking…' : 'Ask'}
-        </button>
+        </Button>
       </form>
     </div>
   );

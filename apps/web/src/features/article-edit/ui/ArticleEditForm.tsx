@@ -11,6 +11,7 @@ import { TopicQuickCreate } from '@/features/topic-create';
 import { updateArticleAction } from '../model/actions';
 
 import styles from './ArticleEdit.module.css';
+import { Button, buttonClass } from '@/shared/ui/Button';
 
 interface IProps {
   article: {
@@ -77,10 +78,10 @@ export function ArticleEditForm({ article, topics }: IProps) {
       </label>
 
       <div className={styles.buttons}>
-        <button type="submit" className={styles.submit} disabled={isPending}>
+        <Button type="submit" variant="primary" value="publish" disabled={isPending}>
           {isPending ? 'Saving…' : 'Save changes'}
-        </button>
-        <Link href={`/articles/${article.slug}`} className={styles.cancel}>
+        </Button>
+        <Link href={`/articles/${article.slug}`} className={buttonClass({ variant: 'quiet' })}>
           Cancel
         </Link>
       </div>

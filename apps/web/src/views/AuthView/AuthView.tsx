@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { Frame } from '@/shared/ui/Frame';
-
 import styles from './AuthView.module.css';
 
 interface IProps {
@@ -15,9 +13,17 @@ interface IProps {
 export function AuthView({ title, subtitle, children, footer }: IProps) {
   return (
     <main className={styles.screen}>
-      <Frame className={styles.panel}>
+      <div className={styles.panel}>
+        <div className={styles.bar}>
+          <span className={styles.barLabel}>Secure terminal</span>
+          <span className={styles.barDot} aria-hidden="true" />
+        </div>
+
         <div className={styles.inner}>
-          <p className="label">DevPraxis</p>
+          <p className={styles.boot}>
+            <span className={styles.typed}>&gt; devpraxis --auth</span>
+          </p>
+
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.subtitle}>{subtitle}</p>
 
@@ -27,7 +33,7 @@ export function AuthView({ title, subtitle, children, footer }: IProps) {
             {footer.question} <Link href={footer.href}>{footer.action}</Link>
           </p>
         </div>
-      </Frame>
+      </div>
     </main>
   );
 }

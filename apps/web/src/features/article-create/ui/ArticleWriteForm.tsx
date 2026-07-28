@@ -10,6 +10,7 @@ import { createArticleAction } from '../model/actions';
 import { INITIAL_ARTICLE_STATE } from '../model/types';
 
 import styles from './ArticleCreate.module.css';
+import { Button } from '@/shared/ui/Button';
 
 export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] }) {
   const [state, formAction, isPending] = useActionState(createArticleAction, INITIAL_ARTICLE_STATE);
@@ -63,24 +64,12 @@ export function ArticleWriteForm({ topics }: { topics: readonly TopicOption[] })
       </label>
 
       <div className={styles.buttons}>
-        <button
-          type="submit"
-          name="intent"
-          value="publish"
-          className={styles.submit}
-          disabled={isPending}
-        >
+        <Button type="submit" variant="primary" name="intent" value="publish" disabled={isPending}>
           {isPending ? 'Working…' : 'Publish'}
-        </button>
-        <button
-          type="submit"
-          name="intent"
-          value="draft"
-          className={styles.secondary}
-          disabled={isPending}
-        >
+        </Button>
+        <Button type="submit" name="intent" value="draft" disabled={isPending}>
           Save as draft
-        </button>
+        </Button>
       </div>
     </form>
   );

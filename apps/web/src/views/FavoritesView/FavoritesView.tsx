@@ -22,7 +22,7 @@ export async function FavoritesView() {
           Nothing saved yet. Star an article on the <Link href="/">feed</Link> to keep it here.
         </p>
       ) : (
-        <ul className={styles.grid}>
+        <ul className={styles.list}>
           {favorites.data.map((article) => (
             <li key={article.id}>
               <ArticleCard article={article} topicNames={topicNames} isAuthenticated />

@@ -5,6 +5,7 @@ import { useRef, useState, useTransition } from 'react';
 import { generateSummaryAction } from '../model/actions';
 
 import styles from './SummaryButton.module.css';
+import { Button } from '@/shared/ui/Button';
 
 interface IProps {
   articleId: string;
@@ -40,6 +41,9 @@ export function SummaryButton({ articleId, title }: IProps) {
       >
         Summary
       </button>
+      <Button size="sm" onClick={open} aria-label={`AI summary of “${title}”`}>
+        Summary
+      </Button>
 
       <dialog ref={dialogRef} className={styles.dialog} aria-labelledby="summary-title">
         <div className={styles.body}>
@@ -63,9 +67,9 @@ export function SummaryButton({ articleId, title }: IProps) {
 
           {summary && <p className={styles.summary}>{summary}</p>}
 
-          <button type="button" className={styles.close} onClick={() => dialogRef.current?.close()}>
+          <Button variant="quiet" onClick={() => dialogRef.current?.close()}>
             Close
-          </button>
+          </Button>
         </div>
       </dialog>
     </>

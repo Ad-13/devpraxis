@@ -1,7 +1,7 @@
 'use client';
 
-import { LANGUAGES, LANGUAGE_LABELS, type Language } from '@devpraxis/shared';
 import { useState, useTransition } from 'react';
+import { LANGUAGES, LANGUAGE_LABELS, type Language } from '@devpraxis/shared';
 
 import {
   generateQuestionsAction,
@@ -9,6 +9,7 @@ import {
   translateArticleAction,
   type QuestionItem,
 } from '../model/actions';
+import { Button } from '@/shared/ui/Button';
 
 import styles from './ArticleAiPanel.module.css';
 
@@ -65,30 +66,22 @@ export function ArticleAiPanel({ articleId, articleLanguage }: IProps) {
         <h2 id="ai-tools-title" className={styles.heading}>
           AI tools
         </h2>
-        <p className={styles.note}>
-          Runs a language model over this article. Answers take a few seconds.
-        </p>
+        <p className={styles.note}>Answers take a few seconds.</p>
       </div>
 
       <div className={styles.controls}>
-        <button type="button" className={styles.button} onClick={summarise} disabled={isPending}>
+        <Button size="sm" onClick={summarise} disabled={isPending}>
           Summarise
-        </button>
+        </Button>
 
-        <button type="button" className={styles.button} onClick={askQuestions} disabled={isPending}>
+        <Button size="sm" onClick={askQuestions} disabled={isPending}>
           Interview questions
-        </button>
+        </Button>
 
         {targets.map((code) => (
-          <button
-            key={code}
-            type="button"
-            className={styles.button}
-            onClick={() => translate(code)}
-            disabled={isPending}
-          >
+          <Button key={code} size="sm" onClick={() => translate(code)} disabled={isPending}>
             Translate → {LANGUAGE_LABELS[code]}
-          </button>
+          </Button>
         ))}
       </div>
 

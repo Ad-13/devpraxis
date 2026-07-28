@@ -9,6 +9,7 @@ import { SessionRecovery } from '@/features/auth/ui';
 import { logoutAction } from '@/features/auth/model/actions';
 
 import styles from './Header.module.css';
+import { buttonClass } from '@/shared/ui/Button';
 
 export async function Header() {
   const [user, store] = await Promise.all([getSession(), cookies()]);
@@ -43,7 +44,7 @@ export async function Header() {
 
           {user ? (
             <>
-              <Link href="/new" className={styles.cta}>
+              <Link href="/new" className={buttonClass({ variant: 'primary', size: 'sm' })}>
                 New article
               </Link>
               <span className={styles.user}>{user.name}</span>
@@ -59,7 +60,7 @@ export async function Header() {
               <Link href="/login" className={styles.link}>
                 Sign in
               </Link>
-              <Link href="/register" className={styles.cta}>
+              <Link href="/register" className={buttonClass({ variant: 'primary', size: 'sm' })}>
                 Register
               </Link>
             </>

@@ -15,37 +15,11 @@
   padding: 0;
 }
 
-.page,
-.step {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.page {
   min-width: 2.25rem;
-  height: 2.25rem;
-  padding-inline: var(--space-3);
+  padding-inline: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--ink-muted);
-  clip-path: var(--clip-corner);
-  transition:
-    background var(--dur) var(--ease-out),
-    color var(--dur) var(--ease-out);
-}
-
-.page:hover,
-.step:hover {
-  background: var(--accent-dim);
-  color: var(--ink);
-}
-
-.current {
-  background: var(--accent);
-  color: var(--on-accent);
-}
-
-.current:hover {
-  background: var(--accent-bright);
-  color: var(--on-accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .gap {

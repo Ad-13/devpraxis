@@ -10,6 +10,7 @@ import { uploadArticleAction } from '../model/actions';
 import { INITIAL_ARTICLE_STATE } from '../model/types';
 
 import styles from './ArticleCreate.module.css';
+import { Button } from '@/shared/ui/Button';
 
 export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }) {
   const [state, formAction, isPending] = useActionState(uploadArticleAction, INITIAL_ARTICLE_STATE);
@@ -47,24 +48,12 @@ export function ArticleUploadForm({ topics }: { topics: readonly TopicOption[] }
       />
 
       <div className={styles.buttons}>
-        <button
-          type="submit"
-          name="intent"
-          value="publish"
-          className={styles.submit}
-          disabled={isPending}
-        >
-          {isPending ? 'Working…' : 'Upload and publish'}
-        </button>
-        <button
-          type="submit"
-          name="intent"
-          value="draft"
-          className={styles.secondary}
-          disabled={isPending}
-        >
-          Upload as draft
-        </button>
+        <Button type="submit" variant="primary" name="intent" value="publish" disabled={isPending}>
+          {isPending ? 'Working…' : 'Publish'}
+        </Button>
+        <Button type="submit" name="intent" value="draft" disabled={isPending}>
+          Save as draft
+        </Button>
       </div>
     </form>
   );

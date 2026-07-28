@@ -3,11 +3,11 @@
   --content-width: 72rem;
 
   /* --- Surfaces --- */
-  --bg: #0a0907;
-  --bg-deep: #060504; /* behind the ambience layers */
-  --surface: #17140e; /* cards, panels */
-  --surface-raised: #221d15; /* dialogs, dropdowns, active rows */
-  --surface-sunken: #100e0a; /* inputs, code blocks */
+  --bg: #0d0b08;
+  --bg-deep: #0a0806; /* behind the ambience layers */
+  --surface: #1c1811; /* cards, panels */
+  --surface-raised: #272117; /* dialogs, dropdowns, active rows */
+  --surface-sunken: #141109; /* inputs, code blocks */
 
   /* --- Lines --- */
   --line: #2e281f;

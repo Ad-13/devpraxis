@@ -26,28 +26,6 @@
   color: var(--ink-faint);
 }
 
-.delete {
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--line);
-  color: var(--ink-muted);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  clip-path: var(--clip-corner);
-  transition:
-    border-color var(--dur) var(--ease-out),
-    color var(--dur) var(--ease-out);
-}
-
-.delete:hover:not(:disabled) {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.delete:disabled {
-  opacity: 0.5;
-}
-
 .error {
   margin: var(--space-3) 0 0;
   font-size: var(--text-sm);

@@ -25,40 +25,30 @@
 .textarea,
 .file {
   width: 100%;
-  padding: var(--space-3) var(--space-4);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-sunken);
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--text-base);
-  clip-path: var(--clip-corner);
-  transition: border-color var(--dur) var(--ease-out);
-}
-
-.textarea {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  resize: vertical;
-  min-height: 20rem;
-}
-
-.file {
-  padding: var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--ink-muted);
+  transition:
+    border-color var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out);
 }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
   outline: none;
-  border-color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface-raised);
+  box-shadow: 0 1px 0 0 var(--accent);
 }
 
 .input[aria-invalid='true'],
 .textarea[aria-invalid='true'] {
-  border-color: var(--danger);
+  border-bottom-color: var(--danger);
 }
 
 .hint {
@@ -111,7 +101,7 @@
 .secondary {
   padding: var(--space-3) var(--space-5);
   border: 1px solid var(--line);
-  color: var(--ink-muted);
+  color: var(--ink);
   font-family: var(--font-display);
   font-weight: 600;
   text-transform: uppercase;

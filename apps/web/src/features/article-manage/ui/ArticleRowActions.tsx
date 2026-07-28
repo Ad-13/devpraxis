@@ -3,6 +3,7 @@
 import type { ArticleStatus } from '@devpraxis/shared';
 import { useState, useTransition } from 'react';
 
+import { Button } from '@/shared/ui/Button';
 import { ConfirmButton } from '@/shared/ui/ConfirmButton';
 
 import { deleteArticleAction, setArticleStatusAction } from '../model/actions';
@@ -39,12 +40,13 @@ export function ArticleRowActions({ articleId, title, status }: IProps) {
 
   return (
     <div className={styles.actions}>
-      <button type="button" className={styles.button} onClick={toggleStatus} disabled={isPending}>
+      <Button size="sm" onClick={toggleStatus} disabled={isPending}>
         {isPublished ? 'Unpublish' : 'Publish'}
-      </button>
+      </Button>
 
       <ConfirmButton
-        className={`${styles.button} ${styles.danger}`}
+        variant="danger"
+        size="sm"
         disabled={isPending}
         title="Delete this article?"
         description={`“${title}” will be removed permanently, together with everyone's bookmarks of it. This cannot be undone.`}
