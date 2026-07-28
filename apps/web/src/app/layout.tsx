@@ -17,7 +17,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang="en" data-accent={accentAttribute(accent)} className={fontVariables}>
-      <body>{children}</body>
+      <body>
+        <div className="ambience" aria-hidden="true">
+          <span className="ambience__ray" />
+          <span className="ambience__ray ambience__ray--2" />
+        </div>
+
+        {children}
+      </body>
     </html>
   );
 }

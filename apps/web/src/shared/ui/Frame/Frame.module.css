@@ -1,20 +1,46 @@
 .frame {
+  position: relative;
   clip-path: var(--clip-corner);
-  background: var(--line);
+  background: linear-gradient(150deg, var(--accent-line) 0%, var(--line) 40%, var(--line) 100%);
   padding: 1px;
-  transition: background var(--dur) var(--ease-out);
+  transition:
+    background var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    filter var(--dur) var(--ease-out);
 }
 
 .interactive:hover {
-  background: var(--accent);
+  background: linear-gradient(150deg, var(--accent) 0%, var(--accent-line) 55%, var(--line) 100%);
+  transform: translateY(-2px);
+  filter: drop-shadow(var(--glow-soft));
 }
 
 .frame:has(:focus-visible) {
-  filter: drop-shadow(0 0 0 2px var(--accent)) drop-shadow(0 0 10px var(--accent-dim));
+  filter: drop-shadow(0 0 2px var(--accent)) drop-shadow(var(--glow-hard));
 }
 
 .inner {
+  position: relative;
   clip-path: var(--clip-corner);
   background: var(--surface);
   height: 100%;
+}
+
+.inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--cut);
+  width: 3.5rem;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.7;
+  transition:
+    width var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.interactive:hover .inner::before {
+  width: 6rem;
+  opacity: 1;
 }

@@ -2,29 +2,38 @@
   /* --- Layout --- */
   --content-width: 72rem;
 
-  /* --- surfaces --- */
-  --bg: #0d0c0a;
-  --surface: #16140f; /* cards, panels */
-  --surface-raised: #1e1b15; /* upright panels: dropdown menus, modals */
-  --line: #2b2721; /* dividers, frames */
+  /* --- Surfaces --- */
+  --bg: #0a0907;
+  --bg-deep: #060504; /* behind the ambience layers */
+  --surface: #17140e; /* cards, panels */
+  --surface-raised: #221d15; /* dialogs, dropdowns, active rows */
+  --surface-sunken: #100e0a; /* inputs, code blocks */
+
+  /* --- Lines --- */
+  --line: #2e281f;
+  --line-strong: #453b2b;
+  --accent-line: rgb(217 164 65 / 0.38);
 
   /* --- Text --- */
-  --ink: #ebe7dd; /* main */
-  --ink-muted: #9a9384; /* secondary */
-  --ink-faint: #7d7668; /* meta, placeholder */
+  --ink: #f2ede2;
+  --ink-muted: #c0b6a2;
+  --ink-faint: #8f8676;
 
   /* --- Accent --- */
-  --accent: #d4a33e;
-  --accent-bright: #f0c065; /* hover, активные состояния */
-  --accent-dim: rgba(212, 163, 62, 0.14); /* highlight */
-  --on-accent: #14110a; /* text on accent */
+  --accent: #d9a441;
+  --accent-bright: #f7cd6b;
+  --accent-deep: #a97c22;
+  --accent-dim: rgb(217 164 65 / 0.12);
+  --accent-glow: rgb(217 164 65 / 0.3);
+  --on-accent: #120e06;
 
   /* --- Semantics --- */
-  --danger: #b83a2e;
-  --success: #6a9e5c;
+  --danger: #d1503f;
+  --danger-dim: rgb(209 80 63 / 0.14);
+  --success: #7cb469;
 
-  /* --- Typography scales --- */
-  --font-display: var(--font-rajdhani); /* headings, titles, next/font */
+  /* --- Typography --- */
+  --font-display: var(--font-rajdhani);
   --font-body: var(--font-inter);
   --font-mono: var(--font-jetbrains);
 
@@ -36,8 +45,8 @@
   --text-2xl: 2rem;
   --text-3xl: 2.75rem;
 
-  --tracking-wide: 0.14em; /* for signatures */
-  --tracking-label: 0.22em; /* for signatures */
+  --tracking-wide: 0.14em;
+  --tracking-label: 0.22em;
 
   /* --- Spacing --- */
   --space-1: 4px;
@@ -49,8 +58,9 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  /* --- Geometry DX:HR --- */
-  --cut: 10px; /* size of rounded corners */
+  /* --- Geometry --- */
+  --cut: 10px;
+  --cut-lg: 16px;
   --clip-corner: polygon(
     var(--cut) 0,
     100% 0,
@@ -59,33 +69,55 @@
     0 100%,
     0 var(--cut)
   );
-  --radius: 2px; /* where clip-path is not enough */
+  --clip-corner-lg: polygon(
+    var(--cut-lg) 0,
+    100% 0,
+    100% calc(100% - var(--cut-lg)),
+    calc(100% - var(--cut-lg)) 100%,
+    0 100%,
+    0 var(--cut-lg)
+  );
+  --radius: 2px;
+
+  /* --- Elevation --- */
+  --glow-soft: 0 0 18px rgb(217 164 65 / 0.18);
+  --glow-hard: 0 0 26px rgb(217 164 65 / 0.35);
+  --shadow-panel: 0 12px 32px rgb(0 0 0 / 0.5);
 
   /* --- Motion --- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.15);
   --dur-fast: 120ms;
   --dur: 200ms;
-  --dur-slow: 350ms;
+  --dur-slow: 380ms;
+  --dur-ambient: 24s;
 
   /* --- Layers --- */
+  --z-ambience: -1;
   --z-nav: 10;
   --z-dropdown: 50;
   --z-modal: 100;
 }
 
-/* --- Switching acents: data-accent attribute in <html> tag --- */
+/* --- Accent variants, switched by the data-accent attribute on <html> --- */
 [data-accent='crimson'] {
   --accent: #e0604f;
-  --accent-bright: #f58573;
-  --accent-dim: rgba(212, 87, 74, 0.14);
-  --on-accent: #180a07;
+  --accent-bright: #f9917f;
+  --accent-deep: #a83c2e;
+  --accent-dim: rgb(224 96 79 / 0.12);
+  --accent-glow: rgb(224 96 79 / 0.3);
+  --accent-line: rgb(224 96 79 / 0.38);
+  --on-accent: #170805;
 }
 
 [data-accent='cyan'] {
   --accent: #4ab8c9;
-  --accent-bright: #74d7e6;
-  --accent-dim: rgba(74, 184, 201, 0.14);
-  --on-accent: #08181c;
+  --accent-bright: #7fdeee;
+  --accent-deep: #2b8595;
+  --accent-dim: rgb(74 184 201 / 0.12);
+  --accent-glow: rgb(74 184 201 / 0.3);
+  --accent-line: rgb(74 184 201 / 0.38);
+  --on-accent: #04161a;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,8 +1,14 @@
-body {
+html {
   background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  background: transparent;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--text-base);
+  line-height: 1.65;
 }
 
 h1,
@@ -13,6 +19,7 @@ h4 {
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.15;
+  text-wrap: balance;
 }
 
 a {
@@ -34,4 +41,29 @@ button {
   cursor: pointer;
   background: none;
   border: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-deep);
+  background-clip: content-box;
 }

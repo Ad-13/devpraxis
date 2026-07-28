@@ -40,7 +40,7 @@ export async function ArticleList({ query }: IProps) {
         {total} article{total === 1 ? '' : 's'}
       </p>
 
-      <ul className={`${styles.grid} rise`}>
+      <ul className={`${styles.grid} stagger`}>
         {feed.data.map((article) => (
           <li key={article.id}>
             <ArticleCard
