@@ -8,17 +8,16 @@ import { deleteTopicAction } from '../model/actions';
 
 import { TopicQuickCreate } from './TopicQuickCreate';
 import styles from './TopicManager.module.css';
+import { ConfirmButton } from '@/shared/ui/ConfirmButton';
 
 export function TopicManager({ topics }: { topics: readonly TopicItem[] }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  function remove(topic: TopicItem) {
-    if (!window.confirm(`Delete the topic “${topic.name}”?`)) return;
-
+  function remove(topicId: string) {
     startTransition(async () => {
       setError(null);
-      const result = await deleteTopicAction(topic.id);
+      const result = await deleteTopicAction(topicId);
       if (!result.ok) setError(result.message ?? 'Something went wrong.');
     });
   }
@@ -41,14 +40,18 @@ export function TopicManager({ topics }: { topics: readonly TopicItem[] }) {
             <li key={topic.id} className={styles.row}>
               <span className={styles.name}>{topic.name}</span>
               <code className={styles.slug}>{topic.slug}</code>
-              <button
-                type="button"
-                className={styles.delete}
-                onClick={() => remove(topic)}
+
+              <ConfirmButton
+                className={`${styles.button} ${styles.danger}`}
                 disabled={isPending}
+                title="Delete this article?"
+                description={`Delete the topic “${topic.name}”?`}
+                confirmLabel="Delete"
+                tone="danger"
+                onConfirm={() => remove(topic.id)}
               >
                 Delete
-              </button>
+              </ConfirmButton>
             </li>
           ))}
         </ul>

@@ -54,12 +54,16 @@ export async function ArticleView({ slug }: IProps) {
                 Edit
               </Link>
             )}
-            <FavoriteButton
-              articleId={article.id}
-              isFavorite={article.isFavorite}
-              count={article.favoritesCount}
-              isAuthenticated={user !== null}
-            />
+            {article.status === 'published' ? (
+              <FavoriteButton
+                articleId={article.id}
+                isFavorite={article.isFavorite}
+                count={article.favoritesCount}
+                isAuthenticated={user !== null}
+              />
+            ) : (
+              <span className={styles.draftBadge}>Draft — publish to allow saving</span>
+            )}
           </div>
         </h1>
 

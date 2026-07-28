@@ -3,6 +3,8 @@
 import type { ArticleStatus } from '@devpraxis/shared';
 import { useState, useTransition } from 'react';
 
+import { ConfirmButton } from '@/shared/ui/ConfirmButton';
+
 import { deleteArticleAction, setArticleStatusAction } from '../model/actions';
 
 import styles from './ArticleRowActions.module.css';
@@ -28,8 +30,6 @@ export function ArticleRowActions({ articleId, title, status }: IProps) {
   }
 
   function remove() {
-    if (!window.confirm(`Delete “${title}”? This cannot be undone.`)) return;
-
     startTransition(async () => {
       setError(null);
       const result = await deleteArticleAction(articleId);
@@ -43,14 +43,17 @@ export function ArticleRowActions({ articleId, title, status }: IProps) {
         {isPublished ? 'Unpublish' : 'Publish'}
       </button>
 
-      <button
-        type="button"
+      <ConfirmButton
         className={`${styles.button} ${styles.danger}`}
-        onClick={remove}
         disabled={isPending}
+        title="Delete this article?"
+        description={`“${title}” will be removed permanently, together with everyone's bookmarks of it. This cannot be undone.`}
+        confirmLabel="Delete"
+        tone="danger"
+        onConfirm={remove}
       >
         Delete
-      </button>
+      </ConfirmButton>
 
       {error && (
         <span className={styles.error} role="status">
