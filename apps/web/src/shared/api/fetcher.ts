@@ -19,7 +19,8 @@ export interface RequestOptions {
   next?: { revalidate?: number | false; tags?: string[] };
   cache?: RequestCache;
   credentials?: RequestCredentials;
-  onResponse?: (response: Response) => void;
+
+  onResponse?: (response: Response) => void | Promise<void>;
 }
 
 export interface ApiResult<T> {
@@ -65,13 +66,14 @@ export async function performRequest<T>(
   try {
     response = await fetch(url, init);
   } catch (cause) {
+    // fetch only rejects on transport failure — DNS, refused connection, abort.
     throw new ApiClientError(0, {
       message: cause instanceof Error ? cause.message : 'Network request failed',
       code: 'NETWORK_ERROR',
     });
   }
 
-  onResponse?.(response);
+  await onResponse?.(response);
 
   // 204 No Content: logout and delete answer with an empty body.
   if (response.status === 204) {
@@ -95,6 +97,7 @@ export async function performRequest<T>(
   }
 
   if (!response.ok) {
+    // Non-2xx that did not follow the error envelope — a proxy or a crash.
     throw new ApiClientError(response.status, {
       message: `Unexpected response ${response.status}`,
       code: 'INTERNAL',

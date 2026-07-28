@@ -49,7 +49,7 @@ export async function loginAction(
     await apiServer<AuthPayload>('/api/auth/login', {
       method: 'POST',
       body: parsed.data,
-      onResponse: (response) => void relayAuthCookies(response),
+      onResponse: relayAuthCookies,
     });
   } catch (error) {
     return toErrorState(error, values);
@@ -82,7 +82,7 @@ export async function registerAction(
     await apiServer<AuthPayload>('/api/auth/register', {
       method: 'POST',
       body: parsed.data,
-      onResponse: (response) => void relayAuthCookies(response),
+      onResponse: relayAuthCookies,
     });
   } catch (error) {
     return toErrorState(error, values);
@@ -95,7 +95,7 @@ export async function logoutAction(): Promise<void> {
   try {
     await apiServer('/api/auth/logout', {
       method: 'POST',
-      onResponse: (response) => void relayAuthCookies(response),
+      onResponse: relayAuthCookies,
     });
   } catch {
     // Even if the API refuses, the relayed clearing cookies have already landed.

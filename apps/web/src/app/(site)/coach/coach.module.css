@@ -1,0 +1,8 @@
+.coach-header {
+  padding: 'var(--space-7) 0 var(--space-5)';
+}
+
+.coach-header-h1 {
+  font-size: 'var(--text-2xl)';
+  margin: 'var(--space-3) 0 0';
+}

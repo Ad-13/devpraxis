@@ -33,6 +33,9 @@ export async function Header() {
               <Link href="/topics" className={styles.link}>
                 Topics
               </Link>
+              <Link href="/coach" className={styles.link}>
+                Coach
+              </Link>
             </div>
           )}
 

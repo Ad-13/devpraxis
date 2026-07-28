@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { apiBrowser } from '@/shared/api/client';
+import { isApiClientError } from '@/shared/api/errors';
 import { deleteCookie, readCookie } from '@/shared/lib/browserCookies';
 
 export function SessionRecovery() {
@@ -21,8 +22,15 @@ export function SessionRecovery() {
       .then(() => {
         router.refresh();
       })
-      .catch(() => {
-        deleteCookie(AUTH_COOKIES.csrf);
+      .catch((error: unknown) => {
+        const status = isApiClientError(error) ? error.status : 0;
+
+        if (status === 401 || status === 403) {
+          deleteCookie(AUTH_COOKIES.csrf);
+          return;
+        }
+
+        attempted.current = false;
       });
   }, [router]);
 

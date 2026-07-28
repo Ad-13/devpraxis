@@ -6,6 +6,7 @@ import { aiProvider } from '#modules/ai/providers/ai.provider';
 import { z } from 'zod';
 import { buildPrepCoach, run } from '#modules/ai/agent/prepCoach';
 import { MaxTurnsExceededError } from '@openai/agents';
+import { splitIntoChunks, unwrapFence } from '#modules/ai/translate';
 
 const guardrailSchema = z.object({ allowed: z.boolean() });
 const MAX_CONTENT_CHARS = 8000;
@@ -58,8 +59,6 @@ export async function generateQuestions(
   return { questions: questions.slice(0, count) };
 }
 
-const translationOutputSchema = z.object({ title: z.string(), content: z.string() });
-
 export async function translateArticle(
   articleId: string,
   userId: string,
@@ -77,20 +76,53 @@ export async function translateArticle(
     throw ApiError.conflict('Translation already exists', { articleId: String(existing._id) });
   }
 
-  const { title, content } = await aiProvider.completeStructured(
-    translationOutputSchema,
-    'article_translation',
-    {
-      model: model ?? DEFAULT_AI_MODEL,
-      system: `Translate the technical article to "${targetLang}". Preserve markdown structure exactly. Do NOT translate code blocks, identifiers, or established technical terms that professionals keep in English.`,
-      user: `Title: ${article.title}\n\n${clip(article.content)}`,
-    },
-  );
+  const chosenModel = model ?? DEFAULT_AI_MODEL;
+
+  const system = [
+    `You translate technical documentation into "${targetLang}".`,
+    'Return ONLY the translated markdown. No preamble, no explanation.',
+    'Do NOT wrap your answer in a code fence.',
+    '',
+    'STRUCTURE: preserve it exactly — heading levels, blank lines between blocks,',
+    'table pipes, list markers, blockquote markers, emphasis, link syntax.',
+    '',
+    'INSIDE FENCED BLOCKS, treat code and text differently:',
+    '- DO translate comments (// ... , # ... , /* ... */) and any prose.',
+    '- DO translate the words in ASCII diagrams, flowcharts and box drawings,',
+    '  keeping the same number of lines and the same drawing characters.',
+    '- DO NOT translate executable code: keywords, identifiers, function and',
+    '  variable names, imports, string literals that are code, CSS properties.',
+    '- Keep the language tag on the fence unchanged.',
+    '',
+    'TERMS: keep established technical vocabulary that professionals use in',
+    'English — Layout, Paint, Composite, Reflow, Repaint, Fiber, hook, props,',
+    'state, commit, render. Translate the surrounding sentence, not these words.',
+  ].join('\n');
+
+  // The whole article, not a truncated prefix: a translation that stops
+  // mid-sentence is worse than no translation at all.
+  const chunks = splitIntoChunks(article.content);
+
+  const translatedChunks: string[] = [];
+  for (const chunk of chunks) {
+    // Sequential on purpose: parallel calls would race past the provider's
+    // rate limit and lose the shared terminology context.
+    const piece = await aiProvider.complete({ model: chosenModel, system, user: chunk });
+    translatedChunks.push(unwrapFence(piece).trim());
+  }
+
+  const content = translatedChunks.join('\n\n');
+
+  const translatedTitle = await aiProvider.complete({
+    model: chosenModel,
+    system: `Translate this article title into "${targetLang}". Return only the title, nothing else.`,
+    user: article.title,
+  });
 
   const draft = await articlesService.createArticle(
     userId,
     {
-      title,
+      title: unwrapFence(translatedTitle).trim().slice(0, 200),
       content,
       topicIds: article.topicIds.map(String),
       language: targetLang,
