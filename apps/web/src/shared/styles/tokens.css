@@ -90,7 +90,9 @@
   --dur-fast: 120ms;
   --dur: 200ms;
   --dur-slow: 380ms;
-  --dur-ambient: 24s;
+
+  --ambient-base: 10s;
+  --ambient-speed: 1;
 
   /* --- Layers --- */
   --z-ambience: -1;

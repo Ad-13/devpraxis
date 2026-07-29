@@ -58,6 +58,5 @@ export type CreateArticleDto = z.infer<typeof createArticleSchema>;
 export type UpdateArticleDto = z.infer<typeof updateArticleSchema>;
 export type NotionImportDto = z.infer<typeof notionImportSchema>;
 export type FeedQuery = z.infer<typeof feedQuerySchema>;
-/** Input shape of the feed query — what a caller may pass before defaults are applied. */
 export type FeedQueryInput = z.input<typeof feedQuerySchema>;
 export type FeedQueryParams = Partial<FeedQuery>;

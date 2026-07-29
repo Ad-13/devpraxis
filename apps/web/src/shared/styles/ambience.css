@@ -11,6 +11,20 @@
   position: absolute;
 }
 
+.ambience__ray,
+.ambience__hex,
+.ambience__scan {
+  --factor: 1;
+  --offset: 0;
+
+  animation-duration: calc(var(--ambient-base) * var(--ambient-speed) * var(--factor));
+  animation-delay: calc(
+    var(--ambient-base) * var(--ambient-speed) * var(--factor) * var(--offset) * -1
+  );
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
 .ambience__wash {
   inset: 0;
   background:
@@ -28,6 +42,8 @@
 
 /* --- Light shafts --- */
 .ambience__ray {
+  --factor: 0.6;
+
   top: -40%;
   left: 8%;
   width: 26rem;
@@ -41,17 +57,19 @@
   opacity: 0.22;
   filter: blur(45px);
   transform: rotate(16deg);
-  animation: drift var(--dur-ambient) var(--ease-out) infinite alternate;
-  will-change: transform, opacity;
+  animation-name: drift;
+  animation-timing-function: var(--ease-out);
+  animation-direction: alternate;
 }
 
 .ambience__ray--2 {
+  --factor: 0.96;
+  --offset: 0.2;
+
   left: auto;
   right: 6%;
   width: 18rem;
   opacity: 0.14;
-  animation-duration: calc(var(--dur-ambient) * 1.6);
-  animation-delay: -8s;
 }
 
 @keyframes drift {
@@ -66,60 +84,67 @@
 }
 
 .ambience__hex {
+  --factor: 1.05;
+
   aspect-ratio: 1 / 1.1547; /* ratio of a regular hexagon */
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   background: linear-gradient(150deg, var(--accent) 0%, var(--accent-deep) 40%, transparent 78%);
   opacity: 0.13;
   filter: drop-shadow(0 0 24px rgb(217 164 65 / 0.35));
-  animation: float 42s var(--ease-out) infinite alternate;
-  will-change: transform;
+  animation-name: float;
+  animation-timing-function: var(--ease-out);
+  animation-direction: alternate;
 }
 
-/* Explicit placement classes: robust against markup reordering. */
 .ambience__hex--a {
+  --factor: 1.15;
   top: 14%;
   left: 11%;
   width: 9rem;
-  animation-duration: 46s;
 }
+
 .ambience__hex--b {
+  --factor: 0.85;
+  --offset: 0.3;
   top: 58%;
   left: 24%;
   width: 5rem;
   opacity: 0.09;
-  animation-duration: 34s;
-  animation-delay: -12s;
 }
+
 .ambience__hex--c {
+  --factor: 1.45;
+  --offset: 0.55;
   top: 30%;
   right: 16%;
   width: 13rem;
   opacity: 0.08;
-  animation-duration: 58s;
-  animation-delay: -22s;
 }
+
 .ambience__hex--d {
+  --factor: 0.75;
+  --offset: 0.15;
   top: 72%;
   right: 30%;
   width: 4rem;
-  animation-duration: 30s;
-  animation-delay: -6s;
 }
+
 .ambience__hex--e {
+  --factor: 1.3;
+  --offset: 0.75;
   top: 6%;
   left: 56%;
   width: 6.5rem;
   opacity: 0.1;
-  animation-duration: 52s;
-  animation-delay: -30s;
 }
+
 .ambience__hex--f {
+  --factor: 0.65;
+  --offset: 0.4;
   top: 44%;
   left: 44%;
   width: 3rem;
   opacity: 0.12;
-  animation-duration: 26s;
-  animation-delay: -16s;
 }
 
 @keyframes float {
@@ -133,13 +158,15 @@
 
 /* --- Scan sweep --- */
 .ambience__scan {
+  --factor: 0.5;
+
   left: 0;
   right: 0;
   top: -34vh;
   height: 34vh;
   background: linear-gradient(to bottom, transparent, rgb(217 164 65 / 0.075), transparent);
-  animation: scanline 20s linear infinite;
-  will-change: transform;
+  animation-name: scanline;
+  animation-timing-function: linear;
 }
 
 @keyframes scanline {
@@ -165,7 +192,7 @@
   .ambience__ray,
   .ambience__hex,
   .ambience__scan {
-    animation: none;
+    animation-name: none;
   }
 
   .ambience__scan {

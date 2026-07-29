@@ -33,14 +33,6 @@ export function SummaryButton({ articleId, title }: IProps) {
 
   return (
     <>
-      <button
-        type="button"
-        className={styles.trigger}
-        onClick={open}
-        aria-label={`AI summary of “${title}”`}
-      >
-        Summary
-      </button>
       <Button size="sm" onClick={open} aria-label={`AI summary of “${title}”`}>
         Summary
       </Button>
