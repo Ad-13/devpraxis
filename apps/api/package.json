@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit",
     "prebuild": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "tsc",
-    "start": "node --env-file=.env dist/server.js"
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@notionhq/client": "^5.23.2",

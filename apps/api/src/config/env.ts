@@ -18,9 +18,17 @@ const envSchema = z.object({
 
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
 
-  OLLAMA_BASE_URL: z.url().default('http://localhost:11434/v1'),
+  AI_BASE_URL: z.url().default('http://localhost:11434/v1'),
+  AI_API_KEY: z.string().min(1).default('ollama'),
 
   WEB_ORIGIN: z.url().default('http://localhost:3001'),
+
+  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+
+  ENABLE_DOCS: z
+    .string()
+    .default('false')
+    .transform((v) => v === 'true'),
 });
 
 const parsed = envSchema.safeParse(process.env);

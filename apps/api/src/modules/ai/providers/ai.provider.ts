@@ -27,8 +27,13 @@ export interface AIProvider {
   ): Promise<T>;
 }
 
-class OllamaProvider implements AIProvider {
-  private readonly client = new OpenAI({ baseURL: env.OLLAMA_BASE_URL, apiKey: 'ollama' });
+class OpenAiCompatibleProvider implements AIProvider {
+  private readonly client = new OpenAI({
+    baseURL: env.AI_BASE_URL,
+    apiKey: env.AI_API_KEY,
+    maxRetries: 5,
+    timeout: 120_000,
+  });
 
   async complete(input: CompletionInput): Promise<string> {
     const res = await this.client.chat.completions.create({
@@ -51,14 +56,22 @@ class OllamaProvider implements AIProvider {
   ): Promise<T> {
     const jsonSchema = JSON.stringify(z.toJSONSchema(schema));
 
-    const raw = await this.complete({
+    const system = `${input.system}
+      CRITICAL OUTPUT FORMAT: respond with ONLY one valid JSON object conforming to this JSON Schema ("${schemaName}").
+      No markdown, no code fences, no explanations before or after the JSON.
+      ${jsonSchema}`;
+
+    const res = await this.client.chat.completions.create({
       model: input.model,
-      system: `${input.system}
-        CRITICAL OUTPUT FORMAT: respond with ONLY one valid JSON object conforming to this JSON Schema ("${schemaName}"). 
-        No markdown, no code fences, no explanations before or after the JSON.
-        ${jsonSchema}`,
-      user: input.user,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: input.user },
+      ],
     });
+
+    const raw = res.choices[0]?.message.content;
+    if (!raw) throw new ApiError(502, 'AI_ERROR', 'Model returned an empty response');
 
     try {
       return schema.parse(JSON.parse(extractJson(raw)));
@@ -68,4 +81,4 @@ class OllamaProvider implements AIProvider {
   }
 }
 
-export const aiProvider: AIProvider = new OllamaProvider();
+export const aiProvider: AIProvider = new OpenAiCompatibleProvider();

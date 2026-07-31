@@ -13,7 +13,7 @@ import { env } from '#config/env';
 import { DEFAULT_AI_MODEL, LANGUAGES, type AiModelId } from '@devpraxis/shared';
 import { ArticleModel } from '#modules/articles/article.model';
 
-setDefaultOpenAIClient(new OpenAI({ baseURL: env.OLLAMA_BASE_URL, apiKey: 'ollama' }));
+setDefaultOpenAIClient(new OpenAI({ baseURL: env.AI_BASE_URL, apiKey: env.AI_API_KEY }));
 setOpenAIAPI('chat_completions');
 setTracingDisabled(true);
 

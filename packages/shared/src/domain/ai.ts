@@ -1,14 +1,12 @@
-export const AI_MODEL_IDS = ['gpt-oss:120b-cloud'] as const;
+export const AI_MODEL_IDS = ['llama-3.3-70b-versatile', 'openai/gpt-oss-120b'] as const;
+
 export type AiModelId = (typeof AI_MODEL_IDS)[number];
 
-export const DEFAULT_AI_MODEL: AiModelId = 'gpt-oss:120b-cloud';
+export const DEFAULT_AI_MODEL: AiModelId = 'llama-3.3-70b-versatile';
 
 export const AI_MODELS: ReadonlyArray<{ id: AiModelId; label: string; isDefault: boolean }> = [
-  {
-    id: 'gpt-oss:120b-cloud',
-    label: 'GPT-OSS 120B (Ollama Cloud)',
-    isDefault: true,
-  },
+  { id: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B — faster bursts', isDefault: true },
+  { id: 'openai/gpt-oss-120b', label: 'GPT-OSS 120B — larger daily budget', isDefault: false },
 ];
 
 export const AI_LIMITS = {
