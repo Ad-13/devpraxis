@@ -17,6 +17,8 @@ export function generateCsrfToken(): string {
   return randomBytes(32).toString('base64url');
 }
 
+const refreshMaxAge = env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000;
+
 export function setAuthCookies(
   res: Response,
   tokens: { accessToken: string; refreshToken: string; csrfToken: string },
@@ -25,21 +27,21 @@ export function setAuthCookies(
     ...base,
     httpOnly: true,
     path: '/',
-    maxAge: env.ACCESS_TOKEN_TTL_MIN * 60_000,
+    maxAge: refreshMaxAge,
   });
 
   res.cookie(REFRESH_COOKIE, tokens.refreshToken, {
     ...base,
     httpOnly: true,
     path: '/api/auth',
-    maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+    maxAge: refreshMaxAge,
   });
 
   res.cookie(CSRF_COOKIE, tokens.csrfToken, {
     ...base,
     httpOnly: false,
     path: '/',
-    maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+    maxAge: refreshMaxAge,
   });
 }
 

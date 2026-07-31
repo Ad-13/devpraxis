@@ -3,7 +3,6 @@ import type { Request, Response } from 'express';
 import { ApiError } from '#utils/ApiError';
 import * as authService from '#modules/auth/auth.service';
 import { UserModel } from '#modules/users/user.model';
-import { currentUserId } from '#utils/currentUserId';
 
 import type { LoginDto, RegisterDto } from '@devpraxis/shared';
 import {
@@ -12,6 +11,7 @@ import {
   REFRESH_COOKIE,
   setAuthCookies,
 } from '#modules/auth/cookies';
+import { readAccessToken } from '#modules/auth/accessToken';
 
 export async function register(
   req: Request<unknown, unknown, RegisterDto>,
@@ -34,7 +34,17 @@ export async function login(
 }
 
 export async function me(req: Request, res: Response): Promise<void> {
-  const user = await UserModel.findById(currentUserId(req));
+  const state = await readAccessToken(req);
+
+  if (state.status === 'expired') {
+    throw new ApiError(401, 'TOKEN_EXPIRED', 'Access token has expired');
+  }
+
+  if (state.status !== 'valid') {
+    throw ApiError.unauthorized('Missing or invalid access token');
+  }
+
+  const user = await UserModel.findById(state.userId);
 
   if (!user) throw ApiError.unauthorized('User no longer exists');
 

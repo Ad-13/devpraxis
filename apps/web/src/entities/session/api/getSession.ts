@@ -10,13 +10,19 @@ export interface SessionUser {
   email: string;
 }
 
-export const getSession = cache(async (): Promise<SessionUser | null> => {
+export interface SessionState {
+  user: SessionUser | null;
+  recoverable: boolean;
+}
+
+export const getSession = cache(async (): Promise<SessionState> => {
   try {
     const result = await apiServer<{ user: SessionUser }>('/api/auth/me');
-    return result.data.user;
+    return { user: result.data.user, recoverable: false };
   } catch (error) {
-    // 401 is the normal answer for a visitor without a session.
-    if (isApiClientError(error) && error.status === 401) return null;
+    if (isApiClientError(error) && error.status === 401) {
+      return { user: null, recoverable: error.code === 'TOKEN_EXPIRED' };
+    }
     throw error;
   }
 });

@@ -54,9 +54,9 @@ class OllamaProvider implements AIProvider {
     const raw = await this.complete({
       model: input.model,
       system: `${input.system}
-
-CRITICAL OUTPUT FORMAT: respond with ONLY one valid JSON object conforming to this JSON Schema ("${schemaName}"). No markdown, no code fences, no explanations before or after the JSON.
-${jsonSchema}`,
+        CRITICAL OUTPUT FORMAT: respond with ONLY one valid JSON object conforming to this JSON Schema ("${schemaName}"). 
+        No markdown, no code fences, no explanations before or after the JSON.
+        ${jsonSchema}`,
       user: input.user,
     });
 

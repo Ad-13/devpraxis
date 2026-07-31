@@ -7,12 +7,13 @@ import { ACCENT_COOKIE, parseAccent } from '@/shared/config/theme';
 import { ThemeSwitcher } from '@/features/ThemeSwitcher';
 import { SessionRecovery } from '@/features/auth/ui';
 import { logoutAction } from '@/features/auth/model/actions';
-
-import styles from './Header.module.css';
 import { buttonClass } from '@/shared/ui/Button';
 
+import styles from './Header.module.css';
+
 export async function Header() {
-  const [user, store] = await Promise.all([getSession(), cookies()]);
+  const [session, store] = await Promise.all([getSession(), cookies()]);
+  const { user, recoverable } = session;
   const accent = parseAccent(store.get(ACCENT_COOKIE)?.value);
 
   return (
@@ -56,7 +57,7 @@ export async function Header() {
             </>
           ) : (
             <>
-              <SessionRecovery />
+              {recoverable && <SessionRecovery />}
               <Link href="/login" className={styles.link}>
                 Sign in
               </Link>

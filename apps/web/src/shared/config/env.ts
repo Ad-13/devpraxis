@@ -3,7 +3,7 @@ import 'server-only';
 import { z } from 'zod';
 
 const serverEnvSchema = z.object({
-  API_INTERNAL_URL: z.url().default('http://localhost:3000'),
+  API_INTERNAL_URL: z.url().default('http://127.0.0.1:3000'),
   WEB_ORIGIN: z.url().default('http://localhost:3001'),
 });
 

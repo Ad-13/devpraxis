@@ -1,22 +1,30 @@
 'use client';
 
-import { AUTH_COOKIES } from '@devpraxis/shared';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { apiBrowser } from '@/shared/api/client';
 import { isApiClientError } from '@/shared/api/errors';
-import { deleteCookie, readCookie } from '@/shared/lib/browserCookies';
 
-export function SessionRecovery() {
+import styles from './SessionRecovery.module.css';
+
+type Phase = 'working' | 'failed';
+
+interface IProps {
+  visible?: boolean;
+  redirectOnFail?: string;
+}
+
+export function SessionRecovery({ visible = false, redirectOnFail }: IProps) {
   const router = useRouter();
+  const [phase, setPhase] = useState<Phase>('working');
+
   const attempted = useRef(false);
 
-  useEffect(() => {
+  const attempt = useCallback(() => {
     if (attempted.current) return;
     attempted.current = true;
-
-    if (!readCookie(AUTH_COOKIES.csrf)) return;
+    setPhase('working');
 
     void apiBrowser('/api/auth/refresh', { method: 'POST' })
       .then(() => {
@@ -26,13 +34,37 @@ export function SessionRecovery() {
         const status = isApiClientError(error) ? error.status : 0;
 
         if (status === 401 || status === 403) {
-          deleteCookie(AUTH_COOKIES.csrf);
+          if (redirectOnFail) router.replace(redirectOnFail);
+          else setPhase('failed');
           return;
         }
 
         attempted.current = false;
+        setPhase('failed');
       });
-  }, [router]);
+  }, [router, redirectOnFail]);
 
-  return null;
+  useEffect(() => {
+    attempt();
+  }, [attempt]);
+
+  if (!visible) return null;
+
+  if (phase === 'failed') {
+    return (
+      <div className={styles.screen} role="alert">
+        <p className={styles.text}>Could not reach the server.</p>
+        <button type="button" className={styles.retry} onClick={attempt}>
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.screen} role="status">
+      <span className={styles.spinner} aria-hidden="true" />
+      <p className={styles.text}>Restoring your session…</p>
+    </div>
+  );
 }

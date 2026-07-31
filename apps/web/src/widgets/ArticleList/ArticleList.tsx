@@ -2,8 +2,8 @@ import type { FeedQuery } from '@devpraxis/shared';
 
 import { getArticleFeed } from '@/entities/article/api/getArticleFeed';
 import { ArticleCard } from '@/entities/article/ui/ArticleCard';
-import { getTopics } from '@/entities/topic/api/getTopics';
 import { getSession } from '@/entities/session/api/getSession';
+import { getTopics } from '@/entities/topic/api/getTopics';
 import { buildFeedHref } from '@/shared/lib/feedSearchParams';
 import { Pagination } from '@/shared/ui/Pagination';
 
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export async function ArticleList({ query }: IProps) {
-  const [feed, topics, user] = await Promise.all([
+  const [feed, topics, session] = await Promise.all([
     getArticleFeed(query),
     getTopics(),
     getSession(),
@@ -46,7 +46,7 @@ export async function ArticleList({ query }: IProps) {
             <ArticleCard
               article={article}
               topicNames={topicNames}
-              isAuthenticated={user !== null}
+              isAuthenticated={session.user !== null}
             />
           </li>
         ))}

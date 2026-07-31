@@ -8,9 +8,9 @@ import { getTopics } from '@/entities/topic/api/getTopics';
 import { ArticleAiPanel } from '@/features/ai-tools';
 import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 import { extractHeadings } from '@/shared/lib/toc';
+import { buttonClass } from '@/shared/ui/Button';
 
 import styles from './ArticleView.module.css';
-import { buttonClass } from '@/shared/ui/Button';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export async function ArticleView({ slug }: IProps) {
-  const [result, topics, user] = await Promise.all([
+  const [result, topics, session] = await Promise.all([
     getArticleBySlug(slug),
     getTopics(),
     getSession(),
@@ -33,6 +33,7 @@ export async function ArticleView({ slug }: IProps) {
   if (!result) return null;
 
   const article = result.data;
+  const user = session.user;
   const topicNames = new Map(topics.data.map((topic) => [topic.id, topic.name]));
 
   const headings = extractHeadings(article.content);

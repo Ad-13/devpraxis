@@ -29,6 +29,7 @@ export const API_ERROR_CODES = [
   'FORBIDDEN',
   'NOT_FOUND',
   'INTERNAL',
+  'TOKEN_EXPIRED',
 ] as const;
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];
 
