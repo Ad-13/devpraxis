@@ -1,42 +1,81 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { TocItem } from '@/shared/lib/toc';
 
 import styles from './ArticleToc.module.css';
+
+const READING_LINE_PX = 220;
 
 interface IProps {
   headings: readonly TocItem[];
 }
 
 export function ArticleToc({ headings }: IProps) {
-  const [activeId, setActiveId] = useState<string>(headings[0]?.id ?? '');
+  const [activeId, setActiveId] = useState(headings[0]?.id ?? '');
+  const listRef = useRef<HTMLOListElement>(null);
 
   useEffect(() => {
-    const elements = headings
-      .map((heading) => document.getElementById(heading.id))
-      .filter((element): element is HTMLElement => element !== null);
+    const recompute = () => {
+      let current = headings[0]?.id ?? '';
 
-    if (elements.length === 0) return;
+      for (const heading of headings) {
+        const element = document.getElementById(heading.id);
+        if (!element) continue;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (element.getBoundingClientRect().top <= READING_LINE_PX) current = heading.id;
+        else break;
+      }
 
-        if (visible[0]) setActiveId(visible[0].target.id);
-      },
-      {
-        rootMargin: '-88px 0px -68% 0px',
-        threshold: 0,
-      },
-    );
+      setActiveId(current);
+    };
 
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        recompute();
+      });
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+
+    schedule();
+
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [headings]);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const item = list.querySelector<HTMLElement>(`[data-id="${CSS.escape(activeId)}"]`);
+    if (!item) return;
+
+    const listBox = list.getBoundingClientRect();
+    const itemBox = item.getBoundingClientRect();
+
+    const margin = 24;
+    const above = itemBox.top - listBox.top < margin;
+    const below = itemBox.bottom - listBox.top > listBox.height - margin;
+
+    if (!above && !below) return;
+
+    const target = item.offsetTop - list.clientHeight / 2 + item.clientHeight / 2;
+    const max = list.scrollHeight - list.clientHeight;
+
+    list.scrollTo({
+      top: Math.max(0, Math.min(target, max)),
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
+  }, [activeId]);
 
   if (headings.length < 2) return null;
 
@@ -44,9 +83,9 @@ export function ArticleToc({ headings }: IProps) {
     <nav className={styles.toc} aria-label="Table of contents">
       <p className={styles.head}>Contents</p>
 
-      <ol className={styles.list}>
+      <ol className={styles.list} ref={listRef}>
         {headings.map((heading) => (
-          <li key={heading.id} data-level={heading.level}>
+          <li key={heading.id} data-level={heading.level} data-id={heading.id}>
             <a
               href={`#${heading.id}`}
               className={heading.id === activeId ? `${styles.item} ${styles.active}` : styles.item}

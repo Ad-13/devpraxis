@@ -8,6 +8,7 @@ import { ThemeSwitcher } from '@/features/ThemeSwitcher';
 import { SessionRecovery } from '@/features/auth/ui';
 import { logoutAction } from '@/features/auth/model/actions';
 import { buttonClass } from '@/shared/ui/Button';
+import { NavLink } from '@/shared/ui/NavLink';
 
 import styles from './Header.module.css';
 
@@ -26,18 +27,18 @@ export async function Header() {
         <nav className={styles.nav} aria-label="Main">
           {user && (
             <div className={styles.links}>
-              <Link href="/my" className={styles.link}>
+              <NavLink href="/my" className={styles.link}>
                 My articles
-              </Link>
-              <Link href="/favorites" className={styles.link}>
+              </NavLink>
+              <NavLink href="/favorites" className={styles.link}>
                 Favorites
-              </Link>
-              <Link href="/topics" className={styles.link}>
+              </NavLink>
+              <NavLink href="/topics" className={styles.link}>
                 Topics
-              </Link>
-              <Link href="/coach" className={styles.link}>
+              </NavLink>
+              <NavLink href="/coach" className={styles.link}>
                 Coach
-              </Link>
+              </NavLink>
             </div>
           )}
 
@@ -45,9 +46,9 @@ export async function Header() {
 
           {user ? (
             <>
-              <Link href="/new" className={buttonClass({ variant: 'primary', size: 'sm' })}>
+              <NavLink href="/new" className={buttonClass({ variant: 'primary', size: 'sm' })}>
                 New article
-              </Link>
+              </NavLink>
               <span className={styles.user}>{user.name}</span>
               <form action={logoutAction}>
                 <button type="submit" className={styles.link}>

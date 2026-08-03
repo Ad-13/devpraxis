@@ -1,10 +1,9 @@
-import Link from 'next/link';
-
 import type { ArticleListItem } from '@/entities/article/api/getArticleFeed';
 import { SummaryButton } from '@/features/ai-tools';
 import { FavoriteButton } from '@/features/favorite/ui/FavoriteButton';
 
 import styles from './ArticleCard.module.css';
+import { NavLink } from '@/shared/ui/NavLink';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
@@ -32,9 +31,9 @@ export function ArticleCard({ article, topicNames, isAuthenticated }: IProps) {
 
       <div className={styles.body}>
         <h2 className={styles.title}>
-          <Link href={`/articles/${article.slug}`} className={styles.link}>
+          <NavLink href={`/articles/${article.slug}`} className={styles.link}>
             {article.title}
-          </Link>
+          </NavLink>
         </h2>
 
         <p className={styles.meta}>
